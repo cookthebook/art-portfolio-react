@@ -1,15 +1,6 @@
 .Grid {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-.Grid>* {
-    padding: 10px;
-}
-
-.Grid:after {
-    content: "";
-    flex: auto;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 200px;
 }
