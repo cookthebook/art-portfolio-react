@@ -1,0 +1,19 @@
+.ImageView, .ImageView-img, .ImageView-title {
+    margin: auto;
+    width: 400px;
+}
+
+.ImageView-title {
+    background-color: black;
+    color: whitesmoke
+}
+
+.ImagePreview, .ImagePreview-img, .ImagePreview-title {
+    margin: auto;
+    width: 200px;
+}
+
+.ImagePreview-title {
+    background-color: black;
+    color: whitesmoke
+}

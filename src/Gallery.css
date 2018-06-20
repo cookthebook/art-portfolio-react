@@ -1,0 +1,15 @@
+.Grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.Grid>* {
+    padding: 10px;
+}
+
+.Grid:after {
+    content: "";
+    flex: auto;
+}
