@@ -1,43 +1,38 @@
-import React, {Component} from 'react';
+import React from 'react';
 import "./Image.css";
+import PropTypes from 'prop-types';
 
 export class ImageContainer {
-    constructor (src, title) {
-        this.src = src;
+    constructor (filename, title) {
+        this.filename = filename;
         this.title = title;
     }
+};
+
+export const ImageView = (props) => {
+    const { image } = props;
+    return (
+        <div className="ImageView">
+            <img src={"/images/fulls/" + image.filename} alt={image.title} className="ImageView-img"></img>
+            <p className="ImageView-title">{image.title}</p>
+        </div>
+    );
 }
 
-export class ImageView extends Component {
-    constructor (props) {
-        super(props);
-        this.src = props.src;
-        this.title = props.title;
-    }
+ImageView.propTypes = {
+    image: PropTypes.instanceOf(ImageContainer).isRequired,
+};
 
-    render () {
-        return (
-            <div className="ImageView" onClick={this.props.onClick}>
-                <img src={this.src} alt={this.title} className="ImageView-img"></img>
-                <p className="ImageView-title">{this.title}</p>
-            </div>
-        )
-    }
+export const ImagePreview = (props) => {
+    const { image } = props;
+    return (
+        <div className="ImagePreview">
+            <img src={"/images/thumbs/" + image.filename} alt={image.title} className="ImagePreview-img"></img>
+            <p>{image.title}</p>
+        </div>
+    );
 }
 
-export class ImagePreview extends Component {
-    constructor (props) {
-        super(props);
-        this.src = props.src;
-        this.title = props.title;
-    }
-
-    render () {
-        return (
-            <div className="ImagePreview" onClick={this.props.onClick}>
-                <img src={this.src} alt={this.title} className="ImagePreview-img"></img>
-                <p>{this.title}</p>
-            </div>
-        )
-    }
-}
+ImagePreview.propTypes = {
+    image: PropTypes.instanceOf(ImageContainer).isRequired
+};

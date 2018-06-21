@@ -1,11 +1,12 @@
 .ImageView, .ImageView-img, .ImageView-title {
     margin: auto;
-    width: 400px;
+    width: 900px;
 }
 
 .ImageView-title {
     background-color: black;
-    color: whitesmoke
+    color: whitesmoke;
+    width: 400px;
 }
 
 .ImagePreview, .ImagePreview-img, .ImagePreview-title {
