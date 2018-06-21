@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, BrowserRouter } from 'react-router-dom';
 
 import { GridGallery, FocusGallery } from './Gallery';
 import { ImageContainer } from './Image';
-
-import logo from './logo.svg';
 
 import './App.css';
 
@@ -47,15 +45,17 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-      
-        <header className="App-header">
-          <h1 className="App-title">Aaron Cook Portfolio</h1>
-        </header>
+      <BrowserRouter>
+        <div className="App">
         
-        <Route exact path={"/(gallery|)"} render={() => <GridGallery images={this.state.images} />}/>
-        <Route path="/gallery/:index" render={props => <FocusGallery images={this.state.images} {...props} />}/>
-      </div>
+          <header className="App-header">
+            <h1 className="App-title">Aaron Cook Portfolio</h1>
+          </header>
+          
+          <Route exact path={"/(gallery|)"} render={() => <GridGallery images={this.state.images} />}/>
+          <Route path="/gallery/:index" render={props => <FocusGallery images={this.state.images} {...props} />}/>>
+        </div>
+      </BrowserRouter>
     );
   }
 }

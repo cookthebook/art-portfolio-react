@@ -27,10 +27,10 @@ export const GridGallery = (props) => {
 }
 
 GridGallery.propTypes = {
-    images: PropTypes.arrayOf(
-        PropTypes.instanceOf(ImageContainer),
-        PropTypes.string
-    ).isRequired
+    images: PropTypes.arrayOf(PropTypes.shape({
+        image: PropTypes.instanceOf(ImageContainer),
+        key: PropTypes.string,
+    })).isRequired
 };
 
 export class FocusGallery extends Component {
@@ -105,8 +105,8 @@ export class FocusGallery extends Component {
 }
 
 FocusGallery.propTypes = {
-    images: PropTypes.arrayOf(PropTypes.objectOf(
-        PropTypes.instanceOf(ImageContainer),
-        PropTypes.string
-    )).isRequired
-}
+    images: PropTypes.arrayOf(PropTypes.shape({
+        image: PropTypes.instanceOf(ImageContainer),
+        key: PropTypes.string,
+    })).isRequired
+};
