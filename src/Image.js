@@ -2,6 +2,8 @@ import React from 'react';
 import "./Image.css";
 import PropTypes from 'prop-types';
 
+import { Card, CardImg, CardBody, CardTitle } from 'reactstrap';
+
 export class ImageContainer {
     constructor (filename, title) {
         this.filename = filename;
@@ -26,10 +28,16 @@ ImageView.propTypes = {
 export const ImagePreview = (props) => {
     const { image } = props;
     return (
-        <div className="ImagePreview">
-            <img src={"/images/thumbs/" + image.filename} alt={image.title} className="ImagePreview-img"></img>
-            <p>{image.title}</p>
-        </div>
+        // <div className="ImagePreview">
+        //     <img src={"/images/thumbs/" + image.filename} alt={image.title} className="ImagePreview-img"></img>
+        //     <p>{image.title}</p>
+        // </div>
+        <Card className="ImagePreview">
+            <CardImg top width="100%" src={"/images/thumbs/" + image.filename} alt={image.title} />
+            <CardBody inverse>
+                <CardTitle>{image.title}</CardTitle>
+            </CardBody>
+        </Card>
     );
 }
 

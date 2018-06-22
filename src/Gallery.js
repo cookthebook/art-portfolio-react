@@ -3,26 +3,42 @@ import {ImageView, ImagePreview, ImageContainer} from "./Image.js";
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import { CardDeck, CardColumns, Card } from 'reactstrap';
+
 import "./Gallery.css";
 
 export const GridGallery = (props) => {
     const { images } = props;
+    const row_width = 4;
 
     var img_list = [];
     images.forEach((element, index) => {
         img_list.push(
-            <div key={index}>
-                <Link to={"/gallery/" + index.toString()}>
-                    <ImagePreview image={element.image}/>
-                </Link>
-            </div>
+            <Link to={"/gallery/" + index.toString()} className="GridElement">
+                <ImagePreview image={element.image} key={index} />
+            </Link>
         );
     });
 
+    var decks = [];
+    for (var y = 0; y < img_list.length/row_width; y++) {
+        var curr_row = [];
+        for (var x = 0; x < row_width; x++) {
+            curr_row.push(img_list[y*row_width + x]);
+        }
+        decks.push(
+            <CardDeck key={y.toString()}>
+                {curr_row}
+            </CardDeck>
+        );
+    }
+
     return (
+        // <CardColumns className="Grid">
         <div className="Grid">
-            {img_list}
+            {decks}
         </div>
+        // </CardColumns>
     );
 }
 

@@ -10,14 +10,14 @@
     padding-top: 20px;
 }
 
-.Sidebar Link, a {
+.Sidebar Link, .Sidebar a {
     padding: 6px 8px 6px 16px;
     text-decoration: none;
     font-size: 20px;
-    color: #909090;
+    color: #d0d0d0;
     display: block;
 }
 
-.Sidebar Link, a:hover {
-    color: #f1f1f1;
+.Sidebar Link, .Sidebar a:hover {
+    color: #fff;
 }

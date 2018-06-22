@@ -51,7 +51,7 @@ class App extends Component {
           <Sidebar />
           <div className="App">
             <Route exact path={"/(gallery|)"} render={() => <GridGallery images={this.state.images} />}/>
-            <Route path="/gallery/:index" render={props => <FocusGallery images={this.state.images} {...props} />}/>>
+            <Route path="/gallery/:index" render={props => <FocusGallery images={this.state.images} {...props} />}/>
           </div>
         </div>
       </BrowserRouter>

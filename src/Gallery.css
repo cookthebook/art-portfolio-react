@@ -1,7 +1,15 @@
 .Grid {
-    display: grid;
-    grid-gap: 10px;
-    grid-template-columns: repeat(4, 1fr);
+    padding: 10px;
+}
+
+.GridElement .card {
+    margin-top: 20px;
+    width: 300px;
+}
+
+.GridElement:hover {
+    color: #909090;
+    text-decoration: none;
 }
 
 .FocusView {

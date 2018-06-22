@@ -9,12 +9,27 @@
     width: 400px;
 }
 
-.ImagePreview, .ImagePreview-img, .ImagePreview-title {
-    margin: auto;
-    width: 200px;
+.ImagePreview {
+    margin: 0 auto;
+    width: 300px;
 }
 
-.ImagePreview-title {
-    background-color: black;
-    color: whitesmoke
+.ImagePreview .card-img-top {
+    object-fit: none;
+    object-position: center;
+    width: 100%;
+    height: 250px;
+    background-color: #111;
+}
+
+.ImagePreview .card-body {
+    background-color: #111;
+}
+
+.ImagePreview .card-title {
+    color: #d0d0d0;
+}
+
+.ImagePreview .card-title:hover {
+    color: #fff;
 }
