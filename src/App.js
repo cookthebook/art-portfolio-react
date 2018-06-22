@@ -3,6 +3,7 @@ import { Route, BrowserRouter } from 'react-router-dom';
 
 import { GridGallery, FocusGallery } from './Gallery';
 import { ImageContainer } from './Image';
+import { Sidebar } from './Sidebar';
 
 import './App.css';
 
@@ -46,14 +47,12 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <div className="App">
-        
-          <header className="App-header">
-            <h1 className="App-title">Aaron Cook Portfolio</h1>
-          </header>
-          
-          <Route exact path={"/(gallery|)"} render={() => <GridGallery images={this.state.images} />}/>
-          <Route path="/gallery/:index" render={props => <FocusGallery images={this.state.images} {...props} />}/>>
+        <div>
+          <Sidebar />
+          <div className="App">
+            <Route exact path={"/(gallery|)"} render={() => <GridGallery images={this.state.images} />}/>
+            <Route path="/gallery/:index" render={props => <FocusGallery images={this.state.images} {...props} />}/>>
+          </div>
         </div>
       </BrowserRouter>
     );

@@ -90,15 +90,10 @@ export class FocusGallery extends Component {
         const { index } = this.state;
 
         return (
-            <div>
-                <Link to="/gallery">
-                    Back to gallery
-                </Link>
-                <div className="FocusView">
-                    {this.get_newer_link()}
-                    <ImageView image={this.images[index].image} />
-                    {this.get_older_link()}
-                </div>
+            <div className="FocusView">
+                {this.get_newer_link()}
+                <ImageView image={this.images[index].image} />
+                {this.get_older_link()}
             </div>
         )
     }
