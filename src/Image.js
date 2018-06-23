@@ -14,10 +14,12 @@ export class ImageContainer {
 export const ImageView = (props) => {
     const { image } = props;
     return (
-        <div className="ImageView">
-            <img src={"/images/fulls/" + image.filename} alt={image.title} className="ImageView-img"></img>
-            <p className="ImageView-title">{image.title}</p>
-        </div>
+        <Card className="ImageView">
+            <CardImg top src={"/images/fulls/" + image.filename} alt={image.title} className="ImageView-img" />
+            <CardBody inverse="true">
+                <CardTitle>{image.title}</CardTitle>
+            </CardBody>
+        </Card>
     );
 }
 
@@ -34,7 +36,7 @@ export const ImagePreview = (props) => {
         // </div>
         <Card className="ImagePreview">
             <CardImg top width="100%" src={"/images/thumbs/" + image.filename} alt={image.title} />
-            <CardBody inverse>
+            <CardBody inverse="true">
                 <CardTitle>{image.title}</CardTitle>
             </CardBody>
         </Card>

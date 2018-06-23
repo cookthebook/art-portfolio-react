@@ -3,7 +3,7 @@ import {ImageView, ImagePreview, ImageContainer} from "./Image.js";
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { CardDeck, CardColumns, Card } from 'reactstrap';
+import { CardDeck, Pagination, PaginationItem } from 'reactstrap';
 
 import "./Gallery.css";
 
@@ -14,8 +14,8 @@ export const GridGallery = (props) => {
     var img_list = [];
     images.forEach((element, index) => {
         img_list.push(
-            <Link to={"/gallery/" + index.toString()} className="GridElement">
-                <ImagePreview image={element.image} key={index} />
+            <Link to={"/gallery/" + index.toString()} className="GridElement" key={index} >
+                <ImagePreview image={element.image} />
             </Link>
         );
     });
@@ -27,9 +27,11 @@ export const GridGallery = (props) => {
             curr_row.push(img_list[y*row_width + x]);
         }
         decks.push(
-            <CardDeck key={y.toString()}>
-                {curr_row}
-            </CardDeck>
+            <div className="row justify-content-center" key={y.toString()}>
+                <CardDeck>
+                    {curr_row}
+                </CardDeck>
+            </div>
         );
     }
 
@@ -65,41 +67,72 @@ export class FocusGallery extends Component {
         });
     }
 
-    get_newer_link () {
-        const { index } = this.state;
+    get_pagination () {
+        var first;
+
+        if (this.state.index < 3) {
+            first = 0;
+        } else if (this.state.index > this.images.length - 3) {
+            first = this.images.length - 5;
+        } else {
+            first = this.state.index - 2;
+        }
+
         var newer_link;
-        if (index === 0) {
-            newer_link = null;
+        if (this.state.index === 0) {
+            newer_link = (
+                <PaginationItem disabled>
+                    <div className="page-link">Newer</div>
+                </PaginationItem>
+            );
         } else {
             newer_link = (
-                <Link to={"/gallery/" + (index-1).toString()}>
-                    <button onClick={() => this.switch_focus(index-1)}>
+                <PaginationItem>
+                    <Link to={"/gallery/" + (this.state.index-1).toString()} className="page-link" onClick={() => this.switch_focus(this.state.index-1)}>
                         Newer
-                    </button>
-                </Link>
-            )
+                    </Link>
+                </PaginationItem>
+            );
         }
-
-        return newer_link;
-    }
-
-    get_older_link () {
-        const { index } = this.state;
 
         var older_link;
-
-        if (index === this.images.length-1) {
-            older_link = null;
+        if (this.state.index === (this.images.length - 1)) {
+            older_link = (
+                <PaginationItem disabled>
+                    <div className="page-link">Older</div>
+                </PaginationItem>
+            );
         } else {
             older_link = (
-                <Link to={"/gallery/" + (index+1).toString()}>
-                    <button onClick={() => this.switch_focus(index+1)}>
+                <PaginationItem>
+                    <Link to={"/gallery/" + (this.state.index+1).toString()} className="page-link" onClick={() => this.switch_focus(this.state.index+1)}>
                         Older
-                    </button>
-                </Link>
-            )
+                    </Link>
+                </PaginationItem>
+            );
         }
-        return older_link;
+
+        return (
+            <Pagination className="FocusPagination">
+                {newer_link}
+                <PaginationItem onClick={() => this.switch_focus(first)} className={(first === this.state.index) ? "disabled" : ""}>
+                    <Link to={"/gallery/" + first.toString()} className="page-link">{first}</Link>
+                </PaginationItem>
+                <PaginationItem onClick={() => this.switch_focus(first+1)} className={(first+1 === this.state.index) ? "disabled" : ""}>
+                    <Link to={"/gallery/" + (first+1).toString()} className="page-link">{first+1}</Link>
+                </PaginationItem>
+                <PaginationItem onClick={() => this.switch_focus(first+2)} className={(first+2 === this.state.index) ? "disabled" : ""}>
+                    <Link to={"/gallery/" + (first+2).toString()} className="page-link">{first+2}</Link>
+                </PaginationItem>
+                <PaginationItem onClick={() => this.switch_focus(first+3)} className={(first+3 === this.state.index) ? "disabled" : ""}>
+                    <Link to={"/gallery/" + (first+3).toString()} className="page-link">{first+3}</Link>
+                </PaginationItem>
+                <PaginationItem onClick={() => this.switch_focus(first+4)} className={(first+4 === this.state.index) ? "disabled" : ""}>
+                    <Link to={"/gallery/" + (first+4).toString()} className="page-link">{first+4}</Link>
+                </PaginationItem>
+                {older_link}
+            </Pagination>
+        )
     }
 
     render () {
@@ -107,9 +140,8 @@ export class FocusGallery extends Component {
 
         return (
             <div className="FocusView">
-                {this.get_newer_link()}
+                {this.get_pagination()}
                 <ImageView image={this.images[index].image} />
-                {this.get_older_link()}
             </div>
         )
     }
