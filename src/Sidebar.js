@@ -9,7 +9,6 @@ export const Sidebar = () => {
     <div className="Sidebar">
       <Link to="/">Home</Link>
       <Link to="/gallery/0">Slideshow</Link>
-      <a href="http://www.aaroncook.xyz">Production Site</a>
     </div>
   )
 }
