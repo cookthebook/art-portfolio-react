@@ -3,7 +3,7 @@ import {ImageView, ImagePreview, ImageContainer} from "./Image.js";
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { CardDeck, Pagination, PaginationItem } from 'reactstrap';
+import { CardDeck, Pagination, PaginationItem, ListGroup, ListGroupItem } from 'reactstrap';
 
 import "./Gallery.css";
 
@@ -36,11 +36,14 @@ export const GridGallery = (props) => {
     }
 
     return (
-        // <CardColumns className="Grid">
-        <div className="Grid">
-            {decks}
-        </div>
-        // </CardColumns>
+        <ListGroup>
+            <ListGroupItem className="GridTitle"><h3 className="GridTitle">{props.title}</h3></ListGroupItem>
+            <ListGroupItem>
+                <div className="Grid">
+                    {decks}
+                </div>
+            </ListGroupItem>
+        </ListGroup>
     );
 }
 
@@ -48,7 +51,8 @@ GridGallery.propTypes = {
     images: PropTypes.arrayOf(PropTypes.shape({
         image: PropTypes.instanceOf(ImageContainer),
         key: PropTypes.string,
-    })).isRequired
+    })).isRequired,
+    title: PropTypes.string.isRequired
 };
 
 export class FocusGallery extends Component {

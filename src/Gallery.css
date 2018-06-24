@@ -1,5 +1,15 @@
+h3.GridTitle {
+    color: #d0d0d0;
+    background-color: #222;
+}
+
+li.GridTitle {
+    margin: 20px;
+    margin-bottom: 0px;
+    background-color: #222;
+}
+
 .Grid {
-    padding: 10px;
     margin: auto;
 }
 
