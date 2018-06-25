@@ -1,49 +1,49 @@
 h3.GridTitle {
-    color: #d0d0d0;
-    background-color: #222;
+  color: #d0d0d0;
+  background-color: #222;
 }
 
 li.GridTitle {
-    margin: 20px;
-    margin-bottom: 0px;
-    background-color: #222;
+  margin: 20px;
+  margin-bottom: 0px;
+  background-color: #222;
 }
 
 .Grid {
-    margin: auto;
+  margin: auto;
 }
 
 .GridElement .card {
-    margin-top: 20px;
-    width: 300px;
+  margin-top: 20px;
+  width: 300px;
 }
 
 .GridElement:hover {
-    color: #909090;
-    text-decoration: none;
+  color: #909090;
+  text-decoration: none;
 }
 
 .FocusView {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
 }
 
 .FocusPagination {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 
 .FocusPagination a.page-link {
-    color: #222;
+  color: #222;
 }
 
 .FocusPagination .disabled a.page-link {
-    color: #aaa;
+  color: #aaa;
 }
 
 .FocusPagination .disabled div.page-link {
-    color: #aaa;
+  color: #aaa;
 }
