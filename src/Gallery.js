@@ -37,7 +37,15 @@ export const GridGallery = (props) => {
 
   return (
     <ListGroup>
-      <ListGroupItem className="GridTitle"><h3 className="GridTitle">{props.title}</h3></ListGroupItem>
+      <ListGroupItem className="GridTitle">
+        <h3 className="GridTitle">
+          {props.slideshow != null ? (
+            <Link to={"/gallery/" + props.slideshow + "/0"} className="GridTitle">{props.title}</Link>
+          ) : (
+            props.title
+          )}
+        </h3>
+      </ListGroupItem>
       <ListGroupItem>
         <div className="Grid">
           {decks}
@@ -52,7 +60,8 @@ GridGallery.propTypes = {
     image: PropTypes.instanceOf(ImageContainer),
     key: PropTypes.string,
   })).isRequired,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
+  slideshow: PropTypes.string,
 };
 
 export class FocusGallery extends Component {
@@ -110,7 +119,6 @@ FocusGallery.propTypes = {
 
 const FocusGalleryPagination = (props) => {
   const { index, images, callback } = props;
-
   var first;
 
   if (index < 3) {
@@ -131,7 +139,7 @@ const FocusGalleryPagination = (props) => {
   } else {
     newer_link = (
       <PaginationItem onClick={() => callback(images[index-1].key)}>
-        <Link to={"/gallery/" + images[index-1].key} className="page-link">
+        <Link to={images[index-1].key} className="page-link">
           Newer
         </Link>
       </PaginationItem>
@@ -148,7 +156,7 @@ const FocusGalleryPagination = (props) => {
   } else {
     older_link = (
       <PaginationItem onClick={() => callback(images[index+1].key)}>
-        <Link to={"/gallery/" + images[index+1].key} className="page-link">
+        <Link to={images[index+1].key} className="page-link">
           Older
         </Link>
       </PaginationItem>
@@ -159,19 +167,19 @@ const FocusGalleryPagination = (props) => {
     <Pagination className="FocusPagination">
       {newer_link}
       <PaginationItem className={(first === index) ? "disabled" : ""} onClick={() => callback(images[first].key)}>
-        <Link to={"/gallery/" + images[first].key} className="page-link">{first+1}</Link>
+        <Link to={images[first].key} className="page-link">{first+1}</Link>
       </PaginationItem>
       <PaginationItem className={(first+1 === index) ? "disabled" : ""} onClick={() => callback(images[first+1].key)}>
-        <Link to={"/gallery/" + images[first+1].key} className="page-link">{first+1+1}</Link>
+        <Link to={images[first+1].key} className="page-link">{first+1+1}</Link>
       </PaginationItem>
       <PaginationItem className={(first+2 === index) ? "disabled" : ""} onClick={() => callback(images[first+2].key)}>
-        <Link to={"/gallery/" + images[first+2].key} className="page-link">{first+2+1}</Link>
+        <Link to={images[first+2].key} className="page-link">{first+2+1}</Link>
       </PaginationItem>
       <PaginationItem className={(first+3 === index) ? "disabled" : ""} onClick={() => callback(images[first+3].key)}>
-        <Link to={"/gallery/" + images[first+3].key} className="page-link">{first+3+1}</Link>
+        <Link to={images[first+3].key} className="page-link">{first+3+1}</Link>
       </PaginationItem>
       <PaginationItem className={(first+4 === index) ? "disabled" : ""} onClick={() => callback(images[first+4].key)}>
-        <Link to={"/gallery/" + images[first+4].key} className="page-link">{first+4+1}</Link>
+        <Link to={images[first+4].key} className="page-link">{first+4+1}</Link>
       </PaginationItem>
       {older_link}
     </Pagination>

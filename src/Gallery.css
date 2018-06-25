@@ -3,6 +3,15 @@ h3.GridTitle {
   background-color: #222;
 }
 
+a.GridTitle {
+  color: #d0d0d0;
+}
+
+a.GridTitle:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
 li.GridTitle {
   margin: 20px;
   margin-bottom: 0px;
