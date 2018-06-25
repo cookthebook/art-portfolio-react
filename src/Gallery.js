@@ -92,71 +92,9 @@ export class FocusGallery extends Component {
     }
 
     render () {
-        var first;
-
-        if (this.state.index < 3) {
-            first = 0;
-        } else if (this.state.index > this.images.length - 3) {
-            first = this.images.length - 5;
-        } else {
-            first = this.state.index - 2;
-        }
-
-        var newer_link;
-        if (this.state.index === 0) {
-            newer_link = (
-                <PaginationItem disabled>
-                    <div className="page-link">Newer</div>
-                </PaginationItem>
-            );
-        } else {
-            newer_link = (
-                <PaginationItem onClick={() => this.change_focus(this.images[this.state.index-1].key)}>
-                    <Link to={"/gallery/" + this.images[this.state.index-1].key} className="page-link">
-                        Newer
-                    </Link>
-                </PaginationItem>
-            );
-        }
-
-        var older_link;
-        if (this.state.index === (this.images.length - 1)) {
-            older_link = (
-                <PaginationItem disabled>
-                    <div className="page-link">Older</div>
-                </PaginationItem>
-            );
-        } else {
-            older_link = (
-                <PaginationItem onClick={() => this.change_focus(this.images[this.state.index+1].key)}>
-                    <Link to={"/gallery/" + this.images[this.state.index+1].key} className="page-link">
-                        Older
-                    </Link>
-                </PaginationItem>
-            );
-        }
-
         return (
             <div className="FocusView">
-                <Pagination className="FocusPagination">
-                    {newer_link}
-                    <PaginationItem className={(first === this.state.index) ? "disabled" : ""} onClick={() => this.change_focus(this.images[first].key)}>
-                        <Link exact to={"/gallery/" + this.images[first].key} className="page-link">{first+1}</Link>
-                    </PaginationItem>
-                    <PaginationItem className={(first+1 === this.state.index) ? "disabled" : ""} onClick={() => this.change_focus(this.images[first+1].key)}>
-                        <Link to={"/gallery/" + this.images[first+1].key} className="page-link">{first+1+1}</Link>
-                    </PaginationItem>
-                    <PaginationItem className={(first+2 === this.state.index) ? "disabled" : ""} onClick={() => this.change_focus(this.images[first+2].key)}>
-                        <Link to={"/gallery/" + this.images[first+2].key} className="page-link">{first+2+1}</Link>
-                    </PaginationItem>
-                    <PaginationItem className={(first+3 === this.state.index) ? "disabled" : ""} onClick={() => this.change_focus(this.images[first+3].key)}>
-                        <Link to={"/gallery/" + this.images[first+3].key} className="page-link">{first+3+1}</Link>
-                    </PaginationItem>
-                    <PaginationItem className={(first+4 === this.state.index) ? "disabled" : ""} onClick={() => this.change_focus(this.images[first+4].key)}>
-                        <Link to={"/gallery/" + this.images[first+4].key} className="page-link">{first+4+1}</Link>
-                    </PaginationItem>
-                    {older_link}
-                </Pagination>
+                <FocusGalleryPagination index={this.state.index} images={this.images} callback={this.change_focus} />
                 <ImageView image={this.images[this.state.index].image} />
             </div>
         )
@@ -169,3 +107,82 @@ FocusGallery.propTypes = {
         key: PropTypes.string,
     })).isRequired
 };
+
+const FocusGalleryPagination = (props) => {
+    const { index, images, callback } = props;
+
+    var first;
+
+    if (index < 3) {
+        first = 0;
+    } else if (index > images.length - 3) {
+        first = images.length - 5;
+    } else {
+        first = index - 2;
+    }
+
+    var newer_link;
+    if (index === 0) {
+        newer_link = (
+            <PaginationItem disabled>
+                <div className="page-link">Newer</div>
+            </PaginationItem>
+        );
+    } else {
+        newer_link = (
+            <PaginationItem onClick={() => callback(images[index-1].key)}>
+                <Link to={"/gallery/" + images[index-1].key} className="page-link">
+                    Newer
+                </Link>
+            </PaginationItem>
+        );
+    }
+
+    var older_link;
+    if (index === (images.length - 1)) {
+        older_link = (
+            <PaginationItem disabled>
+                <div className="page-link">Older</div>
+            </PaginationItem>
+        );
+    } else {
+        older_link = (
+            <PaginationItem onClick={() => callback(images[index+1].key)}>
+                <Link to={"/gallery/" + images[index+1].key} className="page-link">
+                    Older
+                </Link>
+            </PaginationItem>
+        );
+    }
+
+    return (
+        <Pagination className="FocusPagination">
+            {newer_link}
+            <PaginationItem className={(first === index) ? "disabled" : ""} onClick={() => callback(images[first].key)}>
+                <Link to={"/gallery/" + images[first].key} className="page-link">{first+1}</Link>
+            </PaginationItem>
+            <PaginationItem className={(first+1 === index) ? "disabled" : ""} onClick={() => callback(images[first+1].key)}>
+                <Link to={"/gallery/" + images[first+1].key} className="page-link">{first+1+1}</Link>
+            </PaginationItem>
+            <PaginationItem className={(first+2 === index) ? "disabled" : ""} onClick={() => callback(images[first+2].key)}>
+                <Link to={"/gallery/" + images[first+2].key} className="page-link">{first+2+1}</Link>
+            </PaginationItem>
+            <PaginationItem className={(first+3 === index) ? "disabled" : ""} onClick={() => callback(images[first+3].key)}>
+                <Link to={"/gallery/" + images[first+3].key} className="page-link">{first+3+1}</Link>
+            </PaginationItem>
+            <PaginationItem className={(first+4 === index) ? "disabled" : ""} onClick={() => callback(images[first+4].key)}>
+                <Link to={"/gallery/" + images[first+4].key} className="page-link">{first+4+1}</Link>
+            </PaginationItem>
+            {older_link}
+        </Pagination>
+    )
+}
+
+FocusGalleryPagination.propTypes = {
+    index: PropTypes.number.isRequired,
+    images: PropTypes.arrayOf(PropTypes.shape({
+        image: PropTypes.instanceOf(ImageContainer),
+        key: PropTypes.string,
+    })).isRequired,
+    callback: PropTypes.func.isRequired,
+}
