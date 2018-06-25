@@ -51,19 +51,6 @@ class App extends Component {
       }
     });
     this.images_all.reverse();
-
-    this.state = {
-      focus: null
-    }
-    this.set_focus = this.set_focus.bind(this);
-  }
-
-  set_focus (focus) {
-    console.log("Setting default focus:");
-    console.log(focus);
-    this.setState({
-      focus: focus
-    });
   }
 
   render() {

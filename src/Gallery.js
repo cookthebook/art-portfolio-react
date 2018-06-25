@@ -74,9 +74,6 @@ export class FocusGallery extends Component {
         }
 
         this.change_focus = this.change_focus.bind(this);
-
-        console.log("New focus:");
-        console.log(this.props);
     }
 
     change_focus (key) {
@@ -144,19 +141,19 @@ export class FocusGallery extends Component {
                 <Pagination className="FocusPagination">
                     {newer_link}
                     <PaginationItem className={(first === this.state.index) ? "disabled" : ""} onClick={() => this.change_focus(this.images[first].key)}>
-                        <Link exact to={"/gallery/" + this.images[first].key} className="page-link">{first}</Link>
+                        <Link exact to={"/gallery/" + this.images[first].key} className="page-link">{first+1}</Link>
                     </PaginationItem>
                     <PaginationItem className={(first+1 === this.state.index) ? "disabled" : ""} onClick={() => this.change_focus(this.images[first+1].key)}>
-                        <Link to={"/gallery/" + this.images[first+1].key} className="page-link">{first+1}</Link>
+                        <Link to={"/gallery/" + this.images[first+1].key} className="page-link">{first+1+1}</Link>
                     </PaginationItem>
                     <PaginationItem className={(first+2 === this.state.index) ? "disabled" : ""} onClick={() => this.change_focus(this.images[first+2].key)}>
-                        <Link to={"/gallery/" + this.images[first+2].key} className="page-link">{first+2}</Link>
+                        <Link to={"/gallery/" + this.images[first+2].key} className="page-link">{first+2+1}</Link>
                     </PaginationItem>
                     <PaginationItem className={(first+3 === this.state.index) ? "disabled" : ""} onClick={() => this.change_focus(this.images[first+3].key)}>
-                        <Link to={"/gallery/" + this.images[first+3].key} className="page-link">{first+3}</Link>
+                        <Link to={"/gallery/" + this.images[first+3].key} className="page-link">{first+3+1}</Link>
                     </PaginationItem>
                     <PaginationItem className={(first+4 === this.state.index) ? "disabled" : ""} onClick={() => this.change_focus(this.images[first+4].key)}>
-                        <Link to={"/gallery/" + this.images[first+4].key} className="page-link">{first+4}</Link>
+                        <Link to={"/gallery/" + this.images[first+4].key} className="page-link">{first+4+1}</Link>
                     </PaginationItem>
                     {older_link}
                 </Pagination>
