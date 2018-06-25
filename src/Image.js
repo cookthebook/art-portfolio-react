@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import "./Image.css";
 import PropTypes from 'prop-types';
 
@@ -23,13 +23,11 @@ export class VideoContainer extends ImageContainer {
 
 export const ImageView = (props) => {
     const { image } = props;
-    
+
     return (
         <Card className="ImageView">
             {image.videofile != null ? (
-                <video controls>
-                    <source src={"/images/fulls/" + image.videofile} type="video/mp4" />
-                </video>
+                <CardVideo videofile={image.videofile} />
             ) : (
                 <CardImg top src={"/images/fulls/" + image.filename} alt={image.title} className="ImageView-img" />
             )}
@@ -43,6 +41,23 @@ export const ImageView = (props) => {
 ImageView.propTypes = {
     image: PropTypes.instanceOf(ImageContainer).isRequired,
 };
+
+class CardVideo extends Component {
+    constructor (props) {
+        super(props);
+        this.state = {
+            videofile: props.videofile
+        };
+    }
+
+    render () {
+        return (
+            <video controls>
+                <source src={"/images/fulls/" + this.state.videofile} type="video/mp4" />
+            </video>
+        )
+    }
+}
 
 export const ImagePreview = (props) => {
     const { image } = props;

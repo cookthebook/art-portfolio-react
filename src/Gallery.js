@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {ImageView, ImagePreview, ImageContainer} from "./Image";
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { CardDeck, Pagination, PaginationItem, ListGroup, ListGroupItem } from 'reactstrap';
