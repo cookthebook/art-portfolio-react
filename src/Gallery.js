@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import {ImageView, ImagePreview, ImageContainer} from "./Image.js";
+import React, { Component } from "react";
+import {ImageView, ImagePreview, ImageContainer} from "./Image";
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -14,7 +14,7 @@ export const GridGallery = (props) => {
     var img_list = [];
     images.forEach((element, index) => {
         img_list.push(
-            <Link to={"/gallery/" + index.toString()} className="GridElement" key={index} >
+            <Link to={"/gallery/" + element.key} className="GridElement" key={index} >
                 <ImagePreview image={element.image} />
             </Link>
         );
@@ -59,31 +59,35 @@ export class FocusGallery extends Component {
     constructor (props) {
         super(props);
         this.images = props.images;
-        this.state = {
-            index: parseInt(props.match.params.index, 10),
-        };
-        this.switch_focus = this.switch_focus.bind(this);
-    }
 
-    switch_focus (index) {
-        this.setState({
-            index: index
+        var index = this.images.findIndex(element => {
+            return (element.key === props.match.params.key);
         });
+
+        if (index === -1) {
+            index = 0;
+        }
+
+        this.focus = props.match.params.key;
+        this.index = index;
+
+        console.log("New focus:");
+        console.log(this);
     }
 
     get_pagination () {
         var first;
 
-        if (this.state.index < 3) {
+        if (this.index < 3) {
             first = 0;
-        } else if (this.state.index > this.images.length - 3) {
+        } else if (this.index > this.images.length - 3) {
             first = this.images.length - 5;
         } else {
-            first = this.state.index - 2;
+            first = this.index - 2;
         }
 
         var newer_link;
-        if (this.state.index === 0) {
+        if (this.index === 0) {
             newer_link = (
                 <PaginationItem disabled>
                     <div className="page-link">Newer</div>
@@ -92,15 +96,15 @@ export class FocusGallery extends Component {
         } else {
             newer_link = (
                 <PaginationItem>
-                    <Link to={"/gallery/" + (this.state.index-1).toString()} className="page-link" onClick={() => this.switch_focus(this.state.index-1)}>
+                    <a href={"/gallery/" + this.images[this.index-1].key} className="page-link">
                         Newer
-                    </Link>
+                    </a>
                 </PaginationItem>
             );
         }
 
         var older_link;
-        if (this.state.index === (this.images.length - 1)) {
+        if (this.index === (this.images.length - 1)) {
             older_link = (
                 <PaginationItem disabled>
                     <div className="page-link">Older</div>
@@ -109,9 +113,9 @@ export class FocusGallery extends Component {
         } else {
             older_link = (
                 <PaginationItem>
-                    <Link to={"/gallery/" + (this.state.index+1).toString()} className="page-link" onClick={() => this.switch_focus(this.state.index+1)}>
+                    <a href={"/gallery/" + this.images[this.index+1].key} className="page-link">
                         Older
-                    </Link>
+                    </a>
                 </PaginationItem>
             );
         }
@@ -119,20 +123,20 @@ export class FocusGallery extends Component {
         return (
             <Pagination className="FocusPagination">
                 {newer_link}
-                <PaginationItem onClick={() => this.switch_focus(first)} className={(first === this.state.index) ? "disabled" : ""}>
-                    <Link to={"/gallery/" + first.toString()} className="page-link">{first}</Link>
+                <PaginationItem className={(first === this.index) ? "disabled" : ""}>
+                    <a href={"/gallery/" + this.images[first].key} className="page-link">{first}</a>
                 </PaginationItem>
-                <PaginationItem onClick={() => this.switch_focus(first+1)} className={(first+1 === this.state.index) ? "disabled" : ""}>
-                    <Link to={"/gallery/" + (first+1).toString()} className="page-link">{first+1}</Link>
+                <PaginationItem className={(first+1 === this.index) ? "disabled" : ""}>
+                    <a href={"/gallery/" + this.images[first+1].key} className="page-link">{first+1}</a>
                 </PaginationItem>
-                <PaginationItem onClick={() => this.switch_focus(first+2)} className={(first+2 === this.state.index) ? "disabled" : ""}>
-                    <Link to={"/gallery/" + (first+2).toString()} className="page-link">{first+2}</Link>
+                <PaginationItem className={(first+2 === this.index) ? "disabled" : ""}>
+                    <a href={"/gallery/" + this.images[first+2].key} className="page-link">{first+2}</a>
                 </PaginationItem>
-                <PaginationItem onClick={() => this.switch_focus(first+3)} className={(first+3 === this.state.index) ? "disabled" : ""}>
-                    <Link to={"/gallery/" + (first+3).toString()} className="page-link">{first+3}</Link>
+                <PaginationItem className={(first+3 === this.index) ? "disabled" : ""}>
+                    <a href={"/gallery/" + this.images[first+3].key} className="page-link">{first+3}</a>
                 </PaginationItem>
-                <PaginationItem onClick={() => this.switch_focus(first+4)} className={(first+4 === this.state.index) ? "disabled" : ""}>
-                    <Link to={"/gallery/" + (first+4).toString()} className="page-link">{first+4}</Link>
+                <PaginationItem className={(first+4 === this.index) ? "disabled" : ""}>
+                    <a href={"/gallery/" + this.images[first+4].key} className="page-link">{first+4}</a>
                 </PaginationItem>
                 {older_link}
             </Pagination>
@@ -140,7 +144,7 @@ export class FocusGallery extends Component {
     }
 
     render () {
-        const { index } = this.state;
+        const index = this.index;
 
         return (
             <div className="FocusView">
