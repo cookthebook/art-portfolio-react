@@ -96,9 +96,9 @@ export class FocusGallery extends Component {
         } else {
             newer_link = (
                 <PaginationItem>
-                    <a href={"/gallery/" + this.images[this.index-1].key} className="page-link">
+                    <Link to={"/gallery/" + this.images[this.index-1].key} className="page-link">
                         Newer
-                    </a>
+                    </Link>
                 </PaginationItem>
             );
         }
@@ -113,9 +113,9 @@ export class FocusGallery extends Component {
         } else {
             older_link = (
                 <PaginationItem>
-                    <a href={"/gallery/" + this.images[this.index+1].key} className="page-link">
+                    <Link to={"/gallery/" + this.images[this.index+1].key} className="page-link">
                         Older
-                    </a>
+                    </Link>
                 </PaginationItem>
             );
         }
@@ -124,19 +124,19 @@ export class FocusGallery extends Component {
             <Pagination className="FocusPagination">
                 {newer_link}
                 <PaginationItem className={(first === this.index) ? "disabled" : ""}>
-                    <a href={"/gallery/" + this.images[first].key} className="page-link">{first}</a>
+                    <Link to={"/gallery/" + this.images[first].key} className="page-link">{first}</Link>
                 </PaginationItem>
                 <PaginationItem className={(first+1 === this.index) ? "disabled" : ""}>
-                    <a href={"/gallery/" + this.images[first+1].key} className="page-link">{first+1}</a>
+                    <Link to={"/gallery/" + this.images[first+1].key} className="page-link">{first+1}</Link>
                 </PaginationItem>
                 <PaginationItem className={(first+2 === this.index) ? "disabled" : ""}>
-                    <a href={"/gallery/" + this.images[first+2].key} className="page-link">{first+2}</a>
+                    <Link to={"/gallery/" + this.images[first+2].key} className="page-link">{first+2}</Link>
                 </PaginationItem>
                 <PaginationItem className={(first+3 === this.index) ? "disabled" : ""}>
-                    <a href={"/gallery/" + this.images[first+3].key} className="page-link">{first+3}</a>
+                    <Link to={"/gallery/" + this.images[first+3].key} className="page-link">{first+3}</Link>
                 </PaginationItem>
                 <PaginationItem className={(first+4 === this.index) ? "disabled" : ""}>
-                    <a href={"/gallery/" + this.images[first+4].key} className="page-link">{first+4}</a>
+                    <Link to={"/gallery/" + this.images[first+4].key} className="page-link">{first+4}</Link>
                 </PaginationItem>
                 {older_link}
             </Pagination>

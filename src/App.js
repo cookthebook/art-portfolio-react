@@ -67,19 +67,31 @@ class App extends Component {
   }
 
   render() {
+    const Home = () => {
+      return (
+        <div>
+          <GridGallery images={this.images_personal} title="Personal (2016-Present)" />
+          <GridGallery images={this.images_dig_drawing} title="UMN Digital Drawing (Spring 2018)" />
+          <GridGallery images={this.images_drawing} title="UMN Intro Drawing (Fall 2016)" />
+        </div>
+      );
+    };
+
+    const Gallery = ({ match }) => {
+      return (
+        <FocusGallery images={this.images_all} match={match} />
+      );
+    };
+
     return (
       <BrowserRouter>
         <div>
           <Sidebar />
           <div className="App">
-            <Route exact path={"/(gallery|)"} render={() => (
-              <div>
-                <GridGallery images={this.images_personal} title="Personal (2016-Present)" />
-                <GridGallery images={this.images_dig_drawing} title="UMN Digital Drawing (Spring 2018)" />
-                <GridGallery images={this.images_drawing} title="UMN Intro Drawing (Fall 2016)" />
-              </div>
-            )}/>
-            <Route exact path="/gallery/:key" render={(props) => <FocusGallery images={this.images_all} {...props} />}/>
+            <Switch>
+              <Route exact path={"/"} component={Home} />
+              <Route path="/gallery/:key" component={Gallery}/>
+            </Switch>
           </div>
         </div>
       </BrowserRouter>
