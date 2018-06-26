@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, BrowserRouter, Switch } from 'react-router-dom';
+import { Route, BrowserRouter, Switch, Link } from 'react-router-dom';
 
 import { GridGallery, FocusGallery } from './Gallery';
 import { ImageContainer, VideoContainer } from './Image';
@@ -7,41 +7,76 @@ import { Sidebar } from './Sidebar';
 
 import './App.css';
 
+import GalleryData from './gallery_data.json';
+
 class App extends Component {
-  constructor (props) {
-    super(props);
-    this.images_dig_drawing = [
-      { image: new ImageContainer("22.jpg", "Artesynal"), key: "23" },
-      { image: new ImageContainer("20.jpg", "Android 21"), key: "22" },
-      { image: new VideoContainer("bust_a_move.jpg", "Bust a Move", "bust_a_move.mp4"), key: "21"},
-      { image: new VideoContainer("hmmm.jpg", "Hmmm", "hmmm.mp4"), key: "20" },
-      { image: new ImageContainer("18.jpg", "Paarthunax"), key: "18" },
-      { image: new ImageContainer("17.jpg", "Mononoke"), key: "17" },
-      { image: new ImageContainer("16.jpg", "Gator"), key: "16" },
-      { image: new ImageContainer("15.jpg", "Mad Max"), key: "15" },
-    ];
+  get_galleries_from_json () {
+    var galleries = [];
 
-    this.images_personal = [
-      { image: new ImageContainer("24.jpg", "Super Girl"), key:"25" },
-      { image: new ImageContainer("21.jpg", "Ace of Hearts"), key: "24" },
-      { image: new ImageContainer("19.jpg", "Daniel Bamdad"), key: "19" },
-      { image: new ImageContainer("14.jpg", "Bitterblossom"), key: "14" },
-      { image: new ImageContainer("13.jpg", "Good Joe"), key: "13" },
-      { image: new ImageContainer("12.jpg", "Lunara"), key: "12" },
-      { image: new ImageContainer("11.jpg", "Eye"), key: "11" },
-      { image: new ImageContainer("10.jpg", "Arya"), key: "10" },
-    ];
+    GalleryData.forEach((gallery) => {
+      var images = [];
 
-    this.images_drawing = [
-      { image: new ImageContainer("9.jpg", "Self"), key: "9" },
-      { image: new ImageContainer("4.jpg", "Wolf"), key: "4" },
-      { image: new ImageContainer("3.jpg", "Deer"), key: "3" },
-      { image: new ImageContainer("2.jpg", "Hawk"), key: "2" },
-      { image: new ImageContainer("1.jpg", "Goat"), key: "1" },
-    ];
+      gallery.sources.forEach((source) => {
+        if (source.image != null) {
+          images.push({
+            image: new ImageContainer(source.image[0], source.image[1]),
+            key: source.key
+          });
+        } else {
+          images.push({
+            image: new VideoContainer(source.video[0], source.video[1], source.video[2]),
+            key: source.key
+          });
+        }
+      });
 
-    this.images_all = this.images_dig_drawing.concat(this.images_personal, this.images_drawing);
-    this.images_all.sort((element1, element2) => {
+      galleries.push(
+        <GridGallery images={images} title={gallery.title} slideshow={gallery.name} key={gallery.title} />
+      );
+    });
+
+    return galleries;
+  }
+
+  get_routes_from_json (galleries) {
+    if (galleries === null) {
+      galleries = this.get_galleries_from_json();
+    }
+
+    var routes = [];
+    GalleryData.forEach((gallery, index) => {
+      const TempGallery = ({ match }) => {
+        return (
+          <div>
+            <FocusGallery images={galleries[index].props.images} match={match} />
+          </div>
+        )
+      }
+      routes.push(
+        <Route exact path={"/gallery/" + gallery.name + "/:key"} component={TempGallery} key={gallery.name} />
+      );
+    })
+
+    return routes;
+  }
+
+  render() {
+    var galleries = this.get_galleries_from_json();
+    var routes = this.get_routes_from_json(galleries);
+
+    const Home = () => {
+      return (
+        <div>
+          {galleries}
+        </div>
+      );
+    };
+
+    var images_all = [];
+    galleries.forEach((gallery) => {
+      images_all = images_all.concat(gallery.props.images);
+    });
+    images_all.sort((element1, element2) => {
       if (parseInt(element1.key, 10) > parseInt(element2.key, 10)) {
         return 1;
       } else if (parseInt(element1.key, 10) < parseInt(element2.key, 10)) {
@@ -50,60 +85,37 @@ class App extends Component {
         return 0;
       }
     });
-    this.images_all.reverse();
-  }
+    images_all.reverse();
 
-  render() {
-  const Home = () => {
+    console.log(images_all);
+
+    const SlideshowAll = ({ match }) => {
+      return (
+        <div>
+          <FocusGallery images={images_all} match={match} />
+        </div>
+      );
+    };
+
+    var sidebar_links = [
+      <Link to="/">Home</Link>,
+      <Link to={"/gallery/" + images_all[0].key}>Slideshow</Link>,
+    ];
+
     return (
-      <div>
-        <GridGallery images={this.images_personal} title="Personal (2016-Present)" slideshow="personal" />
-        <GridGallery images={this.images_dig_drawing} title="UMN Digital Drawing (Spring 2018)" slideshow="digital-drawing" />
-        <GridGallery images={this.images_drawing} title="UMN Intro Drawing (Fall 2016)" slideshow="intro-drawing" />
-      </div>
-    );
-  };
-
-  const Gallery = ({ match }) => {
-    return (
-      <FocusGallery images={this.images_all} match={match} />
-    );
-  };
-
-  const GalleryPersonal = ({ match }) => {
-    return (
-      <FocusGallery images={this.images_personal} match={match} />
-    );
-  };
-
-  const GalleryDigDrawing = ({ match }) => {
-    return (
-      <FocusGallery images={this.images_dig_drawing} match={match} />
-    );
-  };
-
-  const GalleryIntroDrawing = ({ match }) => {
-    return (
-      <FocusGallery images={this.images_drawing} match={match} />
-    );
-  };
-
-  return (
-    <BrowserRouter>
-      <div>
-        <Sidebar />
+      <BrowserRouter>
+        <div>
+          <Sidebar links={sidebar_links}/>
           <div className="App">
             <Switch>
-              <Route exact path={"/"} component={Home} />
-              <Route exact path="/gallery/:key" component={Gallery} />
-              <Route exact path="/gallery/personal/:key" component={GalleryPersonal} />
-              <Route exact path="/gallery/digital-drawing/:key" component={GalleryDigDrawing} />
-              <Route exact path="/gallery/intro-drawing/:key" component={GalleryIntroDrawing} />
+              <Route exact path="/" component={Home} />
+              <Route exact path="/gallery/:key" component={SlideshowAll} />
+              {routes}
             </Switch>
           </div>
-      </div>
-    </BrowserRouter>
-  );
+        </div>
+      </BrowserRouter>
+    );
   }
 }
 

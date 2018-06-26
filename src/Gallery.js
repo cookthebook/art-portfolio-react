@@ -14,7 +14,7 @@ export const GridGallery = (props) => {
   var img_list = [];
   images.forEach((element, index) => {
     img_list.push(
-      <Link to={"/gallery/" + element.key} className="GridElement" key={index} >
+      <Link to={"/gallery/" + props.slideshow + "/" + element.key} className="GridElement" key={index} >
         <ImagePreview image={element.image} />
       </Link>
     );
