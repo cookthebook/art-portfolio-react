@@ -14,6 +14,13 @@
         ]
     },
     {
+        "name": "sketch-book",
+        "title": "Sketch Book",
+        "sources": [
+            { "image": ["tank_girl.jpg", "Tank Girl"], "key": "26" }
+        ]
+    },
+    {
         "name": "dig-drawing",
         "title": "Digital Drawing (Spring 2018)",
         "sources": [
