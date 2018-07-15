@@ -40,7 +40,7 @@ export const GridGallery = (props) => {
       <ListGroupItem className="GridTitle">
         <h3 className="GridTitle">
           {props.slideshow != null ? (
-            <Link to={"/gallery/" + props.slideshow + "/0"} className="GridTitle">{props.title}</Link>
+            <Link to={"/gallery/" + props.slideshow + "/" + images[0].key} className="GridTitle">{props.title}</Link>
           ) : (
             props.title
           )}
@@ -163,24 +163,19 @@ const FocusGalleryPagination = (props) => {
     );
   }
 
+  var numbered_links = [];
+  for (let i = 0; i < (images.length >= 5 ? 5 : images.length); i++) {
+    numbered_links.push(
+      <PaginationItem className={(first + i === index) ? "disabled" : ""} onClick={() => callback(images[first + i].key)}>
+        <Link to={images[first].key} className="page-link">{first + i + 1}</Link>
+      </PaginationItem>
+    )
+  }
+
   return (
     <Pagination className="FocusPagination">
       {newer_link}
-      <PaginationItem className={(first === index) ? "disabled" : ""} onClick={() => callback(images[first].key)}>
-        <Link to={images[first].key} className="page-link">{first+1}</Link>
-      </PaginationItem>
-      <PaginationItem className={(first+1 === index) ? "disabled" : ""} onClick={() => callback(images[first+1].key)}>
-        <Link to={images[first+1].key} className="page-link">{first+1+1}</Link>
-      </PaginationItem>
-      <PaginationItem className={(first+2 === index) ? "disabled" : ""} onClick={() => callback(images[first+2].key)}>
-        <Link to={images[first+2].key} className="page-link">{first+2+1}</Link>
-      </PaginationItem>
-      <PaginationItem className={(first+3 === index) ? "disabled" : ""} onClick={() => callback(images[first+3].key)}>
-        <Link to={images[first+3].key} className="page-link">{first+3+1}</Link>
-      </PaginationItem>
-      <PaginationItem className={(first+4 === index) ? "disabled" : ""} onClick={() => callback(images[first+4].key)}>
-        <Link to={images[first+4].key} className="page-link">{first+4+1}</Link>
-      </PaginationItem>
+      {numbered_links}
       {older_link}
     </Pagination>
   )

@@ -17,6 +17,8 @@
         "name": "sketch-book",
         "title": "Sketch Book",
         "sources": [
+            { "image": ["bladerunner_sketch.jpg", "Bladerunner Sketch"], "key": "28" },
+            { "image": ["mother_panic.jpg", "Mother Panic"], "key": "27" },
             { "image": ["tank_girl.jpg", "Tank Girl"], "key": "26" }
         ]
     },
