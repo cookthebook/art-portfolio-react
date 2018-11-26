@@ -1,14 +1,20 @@
-ZineImg {
-  height: 100%;
-  width: 100%;
+.ZineImg {
+  /* height: 100%; */
+  /* width: 100%; */
 }
 
-ZineImgRow {
-  height: 100%;
-  width: 100%;
+.ZineImgRow {
+  position: relative;
 }
 
-ZineImgContainer {
-  height: 100%;
-  width: 100%;
+.ZineImgContainer {
+  /* height: 100%; */
+  /* width: 100%; */
+}
+
+.ZineImgText {
+  position: absolute;
+  left: 50%;
+  bottom: 0%;
+  font-size: 24px;
 }
