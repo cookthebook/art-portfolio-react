@@ -1,6 +1,5 @@
 import React from 'react';
 import { Row } from 'reactstrap';
-import PropTypes from 'prop-types';
 
 import "./ZineFinal.css"
 import ZineData from './zine_final_data.json'
@@ -11,7 +10,7 @@ export const ZineFinal = (props) => {
     var get_texts = (texts) => {
       var text_arr = [];
       texts.forEach((text) => {
-        text_arr.push(<ZineImgText left={text.left} bottom={text.bottom} text={text.text} />);
+        text_arr.push(<ZineImgText style={text.style} text={text.text} key={text.key} />);
       });
       return text_arr;
     };
@@ -19,7 +18,7 @@ export const ZineFinal = (props) => {
 
     ZineData.forEach((image) => {
       rows.push(
-        <Row className="ZineImgRow">
+        <Row className="ZineImgRow" key={image.key}>
           <img className="ZineImg" src={"/images/zine_resources/" + image.image} alt={image.name} />
           {get_texts(image.texts)}
         </Row>
@@ -36,14 +35,11 @@ export const ZineFinal = (props) => {
 }
 
 const ZineImgText = (props) => {
-  const { left, bottom, text } = props;
+  var { style, text } = props;
+  if (!style.position) {
+    style["position"] = "absolute";
+  }
   return (
-    <p style={{ position: 'absolute', left: left + '%', bottom: bottom + '%' }}>{text}</p>
+    <p style={style}>{text}</p>
   )
-}
-
-ZineImgText.propTypes = {
-  left: PropTypes.number.isRequired,
-  bottom: PropTypes.number.isRequired,
-  text: PropTypes.string.isRequired
 }

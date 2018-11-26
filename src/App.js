@@ -107,9 +107,9 @@ class App extends Component {
     }
 
     var sidebar_links = [
-      <Link to="/">Home</Link>,
-      <Link to={"/gallery/" + images_all[0].key}>Slideshow</Link>,
-      <Link to={"/zinefinal/"}>Comics and Zines Final</Link>
+      <Link to="/" key='0'>Home</Link>,
+      <Link to={"/gallery/" + images_all[0].key} key='1'>Slideshow</Link>,
+      <Link to={"/zinefinal/"} key='2'>Comics and Zines Final</Link>
     ];
 
     return (

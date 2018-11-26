@@ -5,14 +5,18 @@
     "texts": [
       {
         "text": "This is an image",
-        "left": 50,
-        "bottom": 50,
+        "style": {
+          "left": "50%",
+          "bottom": "50%"
+        },
         "key": 0
       },
       {
         "text": "This is another text",
-        "left": 20,
-        "bottom": 5,
+        "style": {
+          "left": "20%",
+          "bottom": "5%"
+        },
         "key": 1
       }
     ],
