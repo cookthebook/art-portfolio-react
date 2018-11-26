@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row } from 'reactstrap';
 
-import "./ZineFinal.css"
+import "./ZineFinal.scss"
 import ZineData from './zine_final_data.json'
 
 export const ZineFinal = (props) => {
