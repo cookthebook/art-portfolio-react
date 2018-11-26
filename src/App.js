@@ -4,13 +4,14 @@ import { Route, BrowserRouter, Switch, Link } from 'react-router-dom';
 import { GridGallery, FocusGallery } from './Gallery';
 import { ImageContainer, VideoContainer } from './Image';
 import { Sidebar } from './Sidebar';
+import { ZineFinal } from './ZineFinal';
 
 import './App.css';
 
 import GalleryData from './gallery_data.json';
 
 class App extends Component {
-  get_galleries_from_json () {
+  get_galleries_from_json() {
     var galleries = [];
 
     GalleryData.forEach((gallery) => {
@@ -38,7 +39,7 @@ class App extends Component {
     return galleries;
   }
 
-  get_routes_from_json (galleries) {
+  get_routes_from_json(galleries) {
     if (galleries === null) {
       galleries = this.get_galleries_from_json();
     }
@@ -97,19 +98,29 @@ class App extends Component {
       );
     };
 
+    const ZinePage = () => {
+      return (
+        <div>
+          <ZineFinal />
+        </div>
+      )
+    }
+
     var sidebar_links = [
       <Link to="/">Home</Link>,
       <Link to={"/gallery/" + images_all[0].key}>Slideshow</Link>,
+      <Link to={"/zinefinal/"}>Comics and Zines Final</Link>
     ];
 
     return (
       <BrowserRouter>
         <div>
-          <Sidebar links={sidebar_links}/>
+          <Sidebar links={sidebar_links} />
           <div className="App">
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/gallery/:key" component={SlideshowAll} />
+              <Route exact path="/zinefinal/" component={ZinePage} />
               {routes}
             </Switch>
           </div>
