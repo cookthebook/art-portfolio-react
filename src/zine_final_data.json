@@ -6,20 +6,40 @@
       {
         "text": "This is an image",
         "style": {
-          "left": "50%",
-          "bottom": "50%"
+          "left": "2%",
+          "bottom": "80%",
+          "font-size": "70px"
         },
         "key": 0
       },
       {
         "text": "This is another text",
         "style": {
-          "left": "20%",
-          "bottom": "5%"
+          "left": "90%",
+          "bottom": "20%",
+          "font-size": "70px",
+          "writing-mode": "vertical-rl"
         },
         "key": 1
       }
     ],
     "key": 0
+  },
+  {
+    "name": "Second",
+    "image": "2.jpg",
+    "texts": [
+      {
+        "text": "This is the next image",
+        "style": {
+          "left": "57%",
+          "bottom": "77%",
+          "font-size": "70px",
+          "color": "ivory"
+        },
+        "key": 0
+      }
+    ],
+    "key": 1
   }
 ]
