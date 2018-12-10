@@ -16,7 +16,7 @@
   {
     "name": "Morning text",
     "texts": [{
-      "text": "by aaron cook\n\n\n\ncomputers are not simply a tool to me",
+      "text": "\n\n\ncomputers are not simply a tool to me",
       "style": {
         "font-size": "30px",
         "font-family": "Lucida Console, Monaco, monospace",
@@ -36,7 +36,7 @@
   {
     "name": "Post morning",
     "texts": [{
-      "text": "they inhabit my space, like a bed or refrigerator",
+      "text": "they inhabit my space\nliving along beside me",
       "style": {
         "padding-top": "8px",
         "font-size": "30px",
@@ -51,7 +51,7 @@
   {
     "name": "pre pile",
     "texts": [{
-      "text": "\n\n\n\nthey have become a necessity, yet they are disposable ",
+      "text": "\n\n\n\nthey are a necessity\nyet they are disposable ",
       "style": {
         "font-size": "30px",
         "font-family": "Lucida Console, Monaco, monospace",
@@ -71,8 +71,9 @@
   {
     "name": "pre pile",
     "texts": [{
-      "text": "coming in several forms, but each serving the same purpose",
+      "text": "manifesting in several forms\neach serving the same purpose",
       "style": {
+        "padding-top": "8px",
         "font-size": "30px",
         "font-family": "Lucida Console, Monaco, monospace",
         "color": "#d0d0d0",
@@ -85,7 +86,7 @@
   {
     "name": "identity",
     "texts": [{
-      "text": "\n\n\n\n\ncomputers are a part of my identity",
+      "text": "\n\n\n\ncomputers are a part of my identity",
       "style": {
         "font-size": "30px",
         "font-family": "Lucida Console, Monaco, monospace",
@@ -105,8 +106,9 @@
   {
     "name": "identity2",
     "texts": [{
-      "text": "always with my person, an extension of my body",
+      "text": "always with my person\nan extension of my body",
       "style": {
+        "padding-top": "8px",
         "font-size": "30px",
         "font-family": "Lucida Console, Monaco, monospace",
         "color": "#d0d0d0",
@@ -141,11 +143,60 @@
     "texts": [{
       "text": "dedicating my career and livelihood to them",
       "style": {
+        "padding-top": "8px",
         "font-size": "30px",
         "font-family": "Lucida Console, Monaco, monospace",
         "color": "#d0d0d0",
         "background-color": "#111",
         "text-align": "left",
+        "width": "100%"
+      }
+    }]
+  },
+  {
+    "name": "night",
+    "texts": [{
+      "text": "\n\ncomputers are an environment over which i have control\nthey behave logically\nthey feel safe",
+      "style": {
+        "font-size": "30px",
+        "font-family": "Lucida Console, Monaco, monospace",
+        "color": "#d0d0d0",
+        "background-color": "#111",
+        "text-align": "left",
+        "width": "100%"
+      }
+    }]
+  },
+  {
+    "name": "night2",
+    "texts": [{
+      "text": "\nthey are a part of myself\neven when i am not there\nacting for me when i cannot",
+      "style": {
+        "font-size": "30px",
+        "font-family": "Lucida Console, Monaco, monospace",
+        "color": "#d0d0d0",
+        "background-color": "#111",
+        "text-align": "left",
+        "width": "100%"
+      }
+    }]
+  },
+  {
+    "name": "Night",
+    "image": "night.jpg",
+    "texts": [],
+    "key": 1
+  },
+  {
+    "name": "credits",
+    "texts": [{
+      "text": "\n[voluntary_necessity_] is a sequential webpage created by Aaron Cook for the Fall 2018 Zines, Comics, and Books class at the University of Minnesota\nFor the best viewing experience, make sure your screen is in landscape, your browser is fullscreen, and the website sidebar is collapsed",
+      "style": {
+        "font-size": "12px",
+        "font-family": "Lucida Console, Monaco, monospace",
+        "color": "#d0d0d0",
+        "background-color": "#111",
+        "text-align": "center",
         "width": "100%"
       }
     }]
