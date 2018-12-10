@@ -107,15 +107,45 @@ class App extends Component {
     }
 
     var sidebar_links = [
-      <Link to="/" key='0'>Home</Link>,
-      <Link to={"/gallery/" + images_all[0].key} key='1'>Slideshow</Link>,
-      <Link to={"/zinefinal/"} key='2'>Comics and Zines Final</Link>
+      <Link className="SideLink" to="/" key='0'>Home</Link>,
+      <Link className="SideLink" to={"/gallery/" + images_all[0].key} key='1'>Slideshow</Link>,
+      <Link className="SideLink" to={"/zinefinal/"} key='2'>Comics and Zines Final</Link>
     ];
+
+    var expanded = true;
+    var hideSidebar = () => {
+      var sidebar = document.getElementsByClassName("Sidebar")[0];
+      var app = document.getElementsByClassName("App")[0];
+      var hide_button = document.getElementById("HideButton");
+      var side_links = document.getElementsByClassName("SideLink");
+
+      if (expanded) {
+        sidebar.style.width = "20px";
+        app.style.marginLeft = "20px";
+        hide_button.innerHTML = ">";
+
+        for (var i = 0; i < side_links.length; i++) {
+          side_links.item(i).style.fontSize = "0px";
+        }
+
+        expanded = false;
+      } else {
+        sidebar.style.width = "130px";
+        app.style.marginLeft = "130px";
+        hide_button.innerHTML = "<";
+
+        for (var i = 0; i < side_links.length; i++) {
+          side_links.item(i).style.fontSize = "20px";
+        }
+
+        expanded = true;
+      }
+    }
 
     return (
       <BrowserRouter>
         <div>
-          <Sidebar links={sidebar_links} />
+          <Sidebar links={sidebar_links} hideCallback={hideSidebar} />
           <div className="App">
             <Switch>
               <Route exact path="/" component={Home} />

@@ -16,11 +16,14 @@ export const ZineFinal = (props) => {
     };
 
 
-    ZineData.forEach((image) => {
+    ZineData.forEach((entry) => {
       rows.push(
-        <Row className="ZineImgRow" key={image.key}>
-          <img className="ZineImg" src={"/images/zine_resources/" + image.image} alt={image.name} />
-          {get_texts(image.texts)}
+        <Row className="ZineImgRow" key={entry.key}>
+          {entry.image ?
+            <img className="ZineImg" src={"/images/zine_resources/" + entry.image} alt={entry.name} /> :
+            null
+          }
+          {get_texts(entry.texts)} 
         </Row>
       )
     });
@@ -36,10 +39,31 @@ export const ZineFinal = (props) => {
 
 const ZineImgText = (props) => {
   var { style, text } = props;
-  if (!style.position) {
-    style["position"] = "absolute";
-  }
   return (
-    <p style={style}>{text}</p>
+    <pre style={style}>{text}</pre>
   )
 }
+// text example:
+// "texts": [
+//   {
+//     "text": "This is an image",
+//     "style": {
+//       "left": "2%",
+//       "bottom": "80%",
+//       "font-size": "70px",
+//       "position": "absolute"
+//     },
+//     "key": 0
+//   },
+//   {
+//     "text": "This is another text",
+//     "style": {
+//       "left": "90%",
+//       "bottom": "20%",
+//       "font-size": "70px",
+//       "writing-mode": "vertical-rl",
+//       "position": "absolute"
+//     },
+//     "key": 1
+//   }
+// ],

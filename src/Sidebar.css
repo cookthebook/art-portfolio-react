@@ -10,14 +10,19 @@
   padding-top: 20px;
 }
 
-.Sidebar Link, .Sidebar a {
-  padding: 6px 8px 6px 16px;
+
+.Sidebar .HideButton:hover {
+  color: #fff;
+}
+
+.HideButton {
   text-decoration: none;
   font-size: 20px;
   color: #d0d0d0;
   display: block;
-}
-
-.Sidebar Link, .Sidebar a:hover {
-  color: #fff;
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+  cursor: pointer
 }

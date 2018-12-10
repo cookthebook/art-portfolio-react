@@ -1,45 +1,54 @@
 [
   {
-    "name": "First",
-    "image": "1.jpg",
-    "texts": [
-      {
-        "text": "This is an image",
-        "style": {
-          "left": "2%",
-          "bottom": "80%",
-          "font-size": "70px"
-        },
-        "key": 0
-      },
-      {
-        "text": "This is another text",
-        "style": {
-          "left": "90%",
-          "bottom": "20%",
-          "font-size": "70px",
-          "writing-mode": "vertical-rl"
-        },
-        "key": 1
+    "name": "Title",
+    "texts": [{
+      "text": "[voluntary_necessity_]",
+      "style": {
+        "font-size": "120px",
+        "font-family": "Lucida Console, Monaco, monospace",
+        "color": "#d0d0d0",
+        "background-color": "#111",
+        "text-align": "left",
+        "width": "100%"
       }
-    ],
+    }]
+  },
+  {
+    "name": "Morning text",
+    "texts": [{
+      "text": "\n\ncomputers are not simply a tool to me",
+      "style": {
+        "font-size": "30px",
+        "font-family": "Lucida Console, Monaco, monospace",
+        "color": "#d0d0d0",
+        "background-color": "#111",
+        "text-align": "left",
+        "width": "100%"
+      }
+    }]
+  },
+  {
+    "name": "Morning",
+    "image": "morning.jpg",
+    "texts": [],
     "key": 0
   },
   {
-    "name": "Second",
-    "image": "2.jpg",
-    "texts": [
-      {
-        "text": "This is the next image",
-        "style": {
-          "left": "57%",
-          "bottom": "77%",
-          "font-size": "70px",
-          "color": "ivory"
-        },
-        "key": 0
-      }
-    ],
+    "name": "Pile",
+    "image": "pile.jpg",
+    "texts": [],
+    "key": 1
+  },
+  {
+    "name": "Bag",
+    "image": "bag.jpg",
+    "texts": [],
+    "key": 2
+  },
+  {
+    "name": "Keller",
+    "image": "keller.jpg",
+    "texts": [],
     "key": 1
   }
 ]
