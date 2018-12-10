@@ -16,7 +16,7 @@
   {
     "name": "Morning text",
     "texts": [{
-      "text": "\n\ncomputers are not simply a tool to me",
+      "text": "by aaron cook\n\n\n\ncomputers are not simply a tool to me",
       "style": {
         "font-size": "30px",
         "font-family": "Lucida Console, Monaco, monospace",
@@ -34,10 +34,67 @@
     "key": 0
   },
   {
+    "name": "Post morning",
+    "texts": [{
+      "text": "they inhabit my space, like a bed or refrigerator",
+      "style": {
+        "padding-top": "8px",
+        "font-size": "30px",
+        "font-family": "Lucida Console, Monaco, monospace",
+        "color": "#d0d0d0",
+        "background-color": "#111",
+        "text-align": "left",
+        "width": "100%"
+      }
+    }]
+  },
+  {
+    "name": "pre pile",
+    "texts": [{
+      "text": "\n\n\n\nthey have become a necessity, yet they are disposable ",
+      "style": {
+        "font-size": "30px",
+        "font-family": "Lucida Console, Monaco, monospace",
+        "color": "#d0d0d0",
+        "background-color": "#111",
+        "text-align": "left",
+        "width": "100%"
+      }
+    }]
+  },
+  {
     "name": "Pile",
     "image": "pile.jpg",
     "texts": [],
     "key": 1
+  },
+  {
+    "name": "pre pile",
+    "texts": [{
+      "text": "coming in several forms, but each serving the same purpose",
+      "style": {
+        "font-size": "30px",
+        "font-family": "Lucida Console, Monaco, monospace",
+        "color": "#d0d0d0",
+        "background-color": "#111",
+        "text-align": "left",
+        "width": "100%"
+      }
+    }]
+  },
+  {
+    "name": "identity",
+    "texts": [{
+      "text": "\n\n\n\n\ncomputers are a part of my identity",
+      "style": {
+        "font-size": "30px",
+        "font-family": "Lucida Console, Monaco, monospace",
+        "color": "#d0d0d0",
+        "background-color": "#111",
+        "text-align": "left",
+        "width": "100%"
+      }
+    }]
   },
   {
     "name": "Bag",
@@ -46,9 +103,51 @@
     "key": 2
   },
   {
+    "name": "identity2",
+    "texts": [{
+      "text": "always with my person, an extension of my body",
+      "style": {
+        "font-size": "30px",
+        "font-family": "Lucida Console, Monaco, monospace",
+        "color": "#d0d0d0",
+        "background-color": "#111",
+        "text-align": "left",
+        "width": "100%"
+      }
+    }]
+  },
+  {
+    "name": "schooling",
+    "texts": [{
+      "text": "\n\n\n\ni am wholly dependent on these machines",
+      "style": {
+        "font-size": "30px",
+        "font-family": "Lucida Console, Monaco, monospace",
+        "color": "#d0d0d0",
+        "background-color": "#111",
+        "text-align": "left",
+        "width": "100%"
+      }
+    }]
+  },
+  {
     "name": "Keller",
     "image": "keller.jpg",
     "texts": [],
     "key": 1
+  },
+  {
+    "name": "schooling2",
+    "texts": [{
+      "text": "dedicating my career and livelihood to them",
+      "style": {
+        "font-size": "30px",
+        "font-family": "Lucida Console, Monaco, monospace",
+        "color": "#d0d0d0",
+        "background-color": "#111",
+        "text-align": "left",
+        "width": "100%"
+      }
+    }]
   }
 ]

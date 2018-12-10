@@ -54,7 +54,7 @@ class App extends Component {
         )
       }
       routes.push(
-        <Route exact path={"/gallery/" + gallery.name + "/:key"} component={TempGallery} key={gallery.name} />
+        <Route exact path={"/gallery/" + gallery.name + "/:key"} component={TempGallery} key={gallery.name} className="ViewSwitcher" />
       );
     })
 
@@ -147,10 +147,10 @@ class App extends Component {
         <div>
           <Sidebar links={sidebar_links} hideCallback={hideSidebar} />
           <div className="App">
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/gallery/:key" component={SlideshowAll} />
-              <Route exact path="/zinefinal/" component={ZinePage} />
+            <Switch className="ViewSwitcher">
+              <Route exact path="/" component={Home} className="ViewSwitcher" />
+              <Route exact path="/gallery/:key" component={SlideshowAll} className="ViewSwitcher" />
+              <Route exact path="/zinefinal/" component={ZinePage} className="ViewSwitcher" />
               {routes}
             </Switch>
           </div>

@@ -1,6 +1,21 @@
 .App {
   text-align: center;
   margin-left: 130px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.App::-webkit-scrollbar {
+  display: none;
+}
+
+.ViewSwitcher {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.ViewSwitcher::-webkit-scrollbar {
+  display: none;
 }
 
 .App-logo {
