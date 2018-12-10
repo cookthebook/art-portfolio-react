@@ -4,7 +4,7 @@ import { Route, BrowserRouter, Switch, Link } from 'react-router-dom';
 import { GridGallery, FocusGallery } from './Gallery';
 import { ImageContainer, VideoContainer } from './Image';
 import { Sidebar } from './Sidebar';
-import { ZineFinal } from './ZineFinal';
+import { ZineFinal, ZinePageStatement } from './ZineFinal';
 
 import './App.css';
 
@@ -98,14 +98,6 @@ class App extends Component {
       );
     };
 
-    const ZinePage = () => {
-      return (
-        <div>
-          <ZineFinal />
-        </div>
-      )
-    }
-
     var sidebar_links = [
       <Link className="SideLink" to="/" key='0'>Home</Link>,
       <Link className="SideLink" to={"/gallery/" + images_all[0].key} key='1'>Slideshow</Link>,
@@ -142,15 +134,32 @@ class App extends Component {
       }
     }
 
+    const ZinePage = () => {
+      return (
+        <div>
+          <ZineFinal />
+        </div>
+      )
+    }
+
+    const ZineStatement = () => {
+      return (
+        <div>
+          <ZinePageStatement />
+        </div>
+      )
+    }
+
     return (
       <BrowserRouter>
         <div>
-          <Sidebar links={sidebar_links} hideCallback={hideSidebar} />
           <div className="App">
+            <Sidebar links={sidebar_links} hideCallback={hideSidebar} />
             <Switch className="ViewSwitcher">
               <Route exact path="/" component={Home} className="ViewSwitcher" />
               <Route exact path="/gallery/:key" component={SlideshowAll} className="ViewSwitcher" />
               <Route exact path="/zinefinal/" component={ZinePage} className="ViewSwitcher" />
+              <Route exact path="/zinefinal/artiststatement/" component={ZineStatement} className="ViewSwitcher" />
               {routes}
             </Switch>
           </div>

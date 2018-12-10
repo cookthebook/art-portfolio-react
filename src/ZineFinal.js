@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Row } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 import "./ZineFinal.scss"
 import ZineData from './zine_final_data.json'
+import ZineArtistStatement from './zine_final_statement.json'
 
-export const ZineFinal = (props) => {
-  var get_rows_from_data = () => {
+export class ZineFinal extends Component {
+  constructor(props) {
+    super(props);
+
+    this.get_rows_from_data = this.get_rows_from_data.bind(this);
+  }
+
+  get_rows_from_data() {
     var rows = [];
     var get_texts = (texts) => {
       var text_arr = [];
@@ -23,18 +31,21 @@ export const ZineFinal = (props) => {
             <img className="ZineImg" src={"/images/zine_resources/" + entry.image} alt={entry.name} /> :
             null
           }
-          {get_texts(entry.texts)} 
+          {get_texts(entry.texts)}
         </Row>
       )
     });
     return rows;
-  };
+  }
 
-  return (
-    <div className="ZineImgContainer container-fluid">
-      {get_rows_from_data()}
-    </div>
-  )
+  render() {
+    return (
+      <div className="ZineImgContainer container-fluid">
+        {this.get_rows_from_data()}
+        <Link to="/zinefinal/artiststatement/" className="StatementLink">Artist Statement</Link>
+      </div>
+    )
+  }
 }
 
 const ZineImgText = (props) => {
@@ -43,6 +54,25 @@ const ZineImgText = (props) => {
     <pre style={style}>{text}</pre>
   )
 }
+
+export const ZinePageStatement = (props) => {
+  const texts = ZineArtistStatement.texts;
+  var paragraphs = [];
+
+  texts.forEach(text => {
+    paragraphs.push(
+      <p className="ArtistStatement">{text}</p>
+    )
+  })
+
+  return (
+    <div className="ArtistStatementPage container-fluid">
+      {paragraphs}
+      <Link to="/zinefinal/" className="ZineBackLink"><br />Back to final</Link>
+    </div>
+  )
+}
+
 // text example:
 // "texts": [
 //   {
