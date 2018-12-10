@@ -43,6 +43,7 @@ export class ZineFinal extends Component {
       <div className="ZineImgContainer container-fluid">
         {this.get_rows_from_data()}
         <Link to="/zinefinal/artiststatement/" className="StatementLink">Artist Statement</Link>
+        <a href="https://github.com/cookthebook/art-portfolio-react/tree/zines_project" className="StatementLink"><br />View the source code at GitHub</a>
       </div>
     )
   }
