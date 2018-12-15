@@ -116,7 +116,7 @@ class App extends Component {
         app.style.marginLeft = "20px";
         hide_button.innerHTML = "  ";
 
-        for (var i = 0; i < side_links.length; i++) {
+        for (let i = 0; i < side_links.length; i++) {
           side_links.item(i).style.fontSize = "0px";
         }
 
@@ -126,7 +126,7 @@ class App extends Component {
         app.style.marginLeft = "130px";
         hide_button.innerHTML = "<";
 
-        for (var i = 0; i < side_links.length; i++) {
+        for (let i = 0; i < side_links.length; i++) {
           side_links.item(i).style.fontSize = "20px";
         }
 
