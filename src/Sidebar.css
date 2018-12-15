@@ -16,23 +16,23 @@
 }
 
 .HideButton {
-  padding: 6px 8px 6px 8px;
+  /* padding: 6px 8px 6px 8px; */
   text-decoration: none;
   font-size: 20px;
   color: #d0d0d0;
   display: block;
-  position: absolute;
-  bottom: 0;
+  position: relative;
+  bottom: 0%;
   text-align: center;
   width: 100%;
-  cursor: pointer
+  cursor: pointer;
 }
 
 .SideLink {
   padding: 6px 8px 6px 8px;
   text-decoration: none;
   font-size: 20px;
-  font-family: "Lucida Console", Monaco, monospace;
+  font-family: Arial, Helvetica, sans-serif;
   color: #d0d0d0;
   display: block;
 }
