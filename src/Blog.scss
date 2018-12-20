@@ -1,0 +1,27 @@
+.BlogContainer {
+  padding-top: 2em;
+  background-color: #111;
+  color: #d0d0d0;
+  font-family: monospace;
+  height: 100vh;
+  padding-left: 2em;
+  padding-right: 2em;
+}
+
+.BlogPost {
+  border-left: 0.1em solid #d0d0d0;
+  padding-left: 1.5em;
+}
+
+.BlogPostTitle {
+  text-align: left;
+}
+
+.BlogPostDate {
+  text-align: left;
+}
+
+.BlogPostBody {
+  text-align: left;
+  color: #d0d0d0;
+}

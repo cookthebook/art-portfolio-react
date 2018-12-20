@@ -16,7 +16,7 @@ export const Sidebar = (props) => {
   return (
     <div className="Sidebar">
       {links_formatted}
-      <p id="HideButton" className="HideButton" onClick={hideCallback}>{"<"}</p>
+      <p id="HideButton" className="HideButton" onClick={hideCallback}>{"<--"}</p>
     </div>
   );
 }

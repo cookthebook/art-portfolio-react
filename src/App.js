@@ -5,6 +5,7 @@ import { GridGallery, FocusGallery } from './Gallery';
 import { ImageContainer, VideoContainer } from './Image';
 import { Sidebar } from './Sidebar';
 import { ZineFinal, ZinePageStatement } from './ZineFinal';
+import { Blog } from './Blog';
 
 import './App.css';
 
@@ -101,7 +102,8 @@ class App extends Component {
     var sidebar_links = [
       <Link className="SideLink" to="/" key='0'>Home</Link>,
       <Link className="SideLink" to={"/gallery/" + images_all[0].key} key='1'>Slideshow</Link>,
-      <Link className="SideLink" to={"/zinefinal/"} key='2'>Comics and Zines Final</Link>
+      <Link className="SideLink" to="/blog/" key='2'>Blog</Link>,
+      <Link className="SideLink" to={"/zinefinal/"} key='3'>Comics and Zines Final</Link>
     ];
 
     var expanded = true;
@@ -150,6 +152,14 @@ class App extends Component {
       )
     }
 
+    const BlogPage = () => {
+      return (
+        <div>
+          <Blog />
+        </div>
+      )
+    }
+
     return (
       <BrowserRouter>
         <div>
@@ -160,6 +170,7 @@ class App extends Component {
               <Route exact path="/gallery/:key" component={SlideshowAll} className="ViewSwitcher" />
               <Route exact path="/zinefinal/" component={ZinePage} className="ViewSwitcher" />
               <Route exact path="/zinefinal/artiststatement/" component={ZineStatement} className="ViewSwitcher" />
+              <Route exact path="/blog/" component={BlogPage} className="ViewSwitcher" />
               {routes}
             </Switch>
           </div>
