@@ -116,7 +116,7 @@ class App extends Component {
       if (expanded) {
         sidebar.style.width = "20px";
         app.style.marginLeft = "20px";
-        hide_button.innerHTML = "  ";
+        hide_button.innerHTML = ">";
 
         for (let i = 0; i < side_links.length; i++) {
           side_links.item(i).style.fontSize = "0px";
