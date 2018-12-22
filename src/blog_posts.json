@@ -6,7 +6,7 @@
       "body": [
         {
           "type": "text",
-          "text": "I'm adding a blog to my website. I don't have much to say right now but I might in the future."
+          "text": "I'm adding a blog to my website. I don't have much to say right now but I might in the future.\n\n- Aaron"
         }
       ]
     },
@@ -16,7 +16,7 @@
       "body": [
         {
           "type": "text",
-          "text": "Here's a embedded image. Json is pretty neat, I suppose. All the blog posts are just stored in a json file. Anyways, I like this wallpaper."
+          "text": "Here's a embedded image. Json is pretty neat, I suppose. All the blog posts are just stored in a json file. Anyways, I like this wallpaper by WLOP."
         },
         {
           "type": "image",
@@ -28,7 +28,7 @@
         },
         {
           "type": "text",
-          "text": "\nI just have to add another text field, and voila, more text."
+          "text": "\nI just have to add another text field, and voila, more text.\n\n- Aaron"
         }
       ]
     }

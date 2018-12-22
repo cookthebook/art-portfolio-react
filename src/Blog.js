@@ -38,20 +38,20 @@ export class Blog extends Component {
 
     BlogPosts.posts.forEach(post => {
       formatted_posts.push(
+        <div style={{"padding-top": "3em", "padding-bottom": "3em"}}>
+          <hr className="PostDivider" />
+        </div>
+      );
+
+      formatted_posts.push(
         <div className="BlogPost">
           <h1 className="BlogPostTitle">{post.title}</h1>
           <p className="BlogPostDate">{post.date}</p>
           {this.getBlogBody(post.body)}
         </div>
       )
-
-      formatted_posts.push(
-        <div style={{"padding-top": "3em", "padding-bottom": "3em"}}>
-          <hr className="PostDivider" />
-        </div>
-      )
     });
-    formatted_posts.pop();
+
     formatted_posts.reverse();
 
     return (
