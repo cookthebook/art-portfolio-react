@@ -38,7 +38,7 @@ export class Blog extends Component {
 
     BlogPosts.posts.forEach(post => {
       formatted_posts.push(
-        <div style={{"padding-top": "3em", "padding-bottom": "3em"}}>
+        <div style={{ "padding-top": "3em", "padding-bottom": "3em" }}>
           <hr className="PostDivider" />
         </div>
       );
