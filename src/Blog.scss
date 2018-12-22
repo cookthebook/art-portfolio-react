@@ -6,6 +6,7 @@
   height: 100vh;
   padding-left: 2em;
   padding-right: 2em;
+  overflow-y: scroll;
 }
 
 .BlogPost {
@@ -24,4 +25,15 @@
 .BlogPostBody {
   text-align: left;
   color: #d0d0d0;
+}
+
+.PostDivider {
+  display: block;
+  margin-top: 0em;
+  margin-bottom: 0em;
+  margin-left: 8em;
+  margin-right: 8em;
+  border-width: 1px;
+  border-style: solid;
+  color: #a0a0a0;
 }

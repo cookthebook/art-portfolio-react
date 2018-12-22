@@ -3,6 +3,33 @@
     {
       "title": "First Blog Post",
       "date": "12-15-2018",
-      "body": "I'm adding a blog to my website. I don't have much to say right now but I might in the future."
+      "body": [
+        {
+          "type": "text",
+          "text": "I'm adding a blog to my website. I don't have much to say right now but I might in the future."
+        }
+      ]
+    },
+    {
+      "title": "Adding Images to Blog Posts",
+      "date": "12-22-2018",
+      "body": [
+        {
+          "type": "text",
+          "text": "Here's a embedded image. Json is pretty neat, I suppose. All the blog posts are just stored in a json file. Anyways, I like this wallpaper."
+        },
+        {
+          "type": "image",
+          "src": "/images/blog/sunset.jpg",
+          "style": {
+            "max-width": "75%",
+            "max-height": "75%"
+          }
+        },
+        {
+          "type": "text",
+          "text": "\nI just have to add another text field, and voila, more text."
+        }
+      ]
     }
 ]}
