@@ -22,7 +22,7 @@ export class Blog extends Component {
           break;
         case "image":
           bodySections.push(
-            <img src={element.src} style={element.style} />
+            <img src={element.src} style={element.style} alt={element.src} />
           )
           break;
         default:
