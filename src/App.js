@@ -4,8 +4,8 @@ import { Route, BrowserRouter, Switch, Link } from 'react-router-dom';
 import { GridGallery, FocusGallery } from './Gallery';
 import { ImageContainer, VideoContainer } from './Image';
 import { Sidebar } from './Sidebar';
-import { ZineFinal, ZinePageStatement } from './ZineFinal';
 import { Blog } from './Blog';
+import { ArtProjects } from './ArtProjects';
 
 import './App.css';
 
@@ -103,7 +103,8 @@ class App extends Component {
       <Link className="SideLink" to="/" key='0'>Home</Link>,
       <Link className="SideLink" to={"/gallery/" + images_all[0].key} key='1'>Slideshow</Link>,
       <Link className="SideLink" to="/blog/" key='2'>Blog</Link>,
-      <Link className="SideLink" to={"/zinefinal/"} key='3'>Comics and Zines Final</Link>
+      <Link className="SideLink" to='/artprojects/' key='3'>Art Projects</Link>,
+      // <Link className="SideLink" to={"/zinefinal/"} key='4'>Comics and Zines Final</Link>
     ];
 
     var expanded = true;
@@ -136,26 +137,18 @@ class App extends Component {
       }
     }
 
-    const ZinePage = () => {
-      return (
-        <div>
-          <ZineFinal />
-        </div>
-      )
-    }
-
-    const ZineStatement = () => {
-      return (
-        <div>
-          <ZinePageStatement />
-        </div>
-      )
-    }
-
     const BlogPage = () => {
       return (
         <div>
           <Blog />
+        </div>
+      )
+    }
+
+    const ProjectIndexPage = () => {
+      return (
+        <div>
+          <ArtProjects />
         </div>
       )
     }
@@ -168,9 +161,8 @@ class App extends Component {
             <Switch className="ViewSwitcher">
               <Route exact path="/" component={Home} className="ViewSwitcher" />
               <Route exact path="/gallery/:key" component={SlideshowAll} className="ViewSwitcher" />
-              <Route exact path="/zinefinal/" component={ZinePage} className="ViewSwitcher" />
-              <Route exact path="/zinefinal/artiststatement/" component={ZineStatement} className="ViewSwitcher" />
               <Route exact path="/blog/" component={BlogPage} className="ViewSwitcher" />
+              <Route exact path='/artprojects' component={ProjectIndexPage} className='ViewSwitcher' />
               {routes}
             </Switch>
           </div>
