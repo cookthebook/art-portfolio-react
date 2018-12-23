@@ -17,7 +17,7 @@ export class Blog extends Component {
       switch (element.type) {
         case "text":
           bodySections.push(
-            <pre className="BlogPostBody">{element.text}</pre>
+            <p className="BlogPostBody">{element.text}</p>
           );
           break;
         case "image":
@@ -48,6 +48,7 @@ export class Blog extends Component {
           <h1 className="BlogPostTitle">{post.title}</h1>
           <p className="BlogPostDate">{post.date}</p>
           {this.getBlogBody(post.body)}
+          {post.author ? <p className="BlogPostBody">{"- " + post.author}</p> : <p className="BlogPostBody">- Aaron</p>}
         </div>
       )
     });

@@ -11,12 +11,11 @@ export const Sidebar = (props) => {
     links_formatted.push(link);
     links_formatted.push(<hr className="SideDivider" />);
   });
-  links_formatted.pop();
 
   return (
     <div className="Sidebar">
       {links_formatted}
-      <p id="HideButton" className="HideButton" onClick={hideCallback}>{"<--"}</p>
+      <p id="HideButton" className="HideButton" onClick={hideCallback}>{"<"}</p>
     </div>
   );
 }
