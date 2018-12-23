@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Route, BrowserRouter, Router, Switch, Link } from 'react-router-dom';
+import { Route, BrowserRouter, Switch, Link } from 'react-router-dom';
 import { ZineFinal, ZinePageStatement } from './ZineFinal';
 
 
 import './ArtProjects.scss';
-import { getPortPromise } from 'portfinder';
 
 export class ArtProjects extends Component {
 
