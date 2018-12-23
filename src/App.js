@@ -5,7 +5,7 @@ import { GridGallery, FocusGallery } from './Gallery';
 import { ImageContainer, VideoContainer } from './Image';
 import { Sidebar } from './Sidebar';
 import { Blog } from './Blog';
-import { ArtProjects } from './ArtProjects';
+import { ArtProjects, ArtProjectRoutes } from './ArtProjects';
 
 import './App.css';
 
@@ -162,8 +162,9 @@ class App extends Component {
               <Route exact path="/" component={Home} className="ViewSwitcher" />
               <Route exact path="/gallery/:key" component={SlideshowAll} className="ViewSwitcher" />
               <Route exact path="/blog/" component={BlogPage} className="ViewSwitcher" />
-              <Route exact path='/artprojects' component={ProjectIndexPage} className='ViewSwitcher' />
+              <Route exact path='/artprojects/' component={ProjectIndexPage} className='ViewSwitcher' />
               {routes}
+              {ArtProjectRoutes()}
             </Switch>
           </div>
         </div>
