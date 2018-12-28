@@ -1,0 +1,3 @@
+[submodule "public/ftc_scouting"]
+	path = public/ftc_scouting
+	url = git@github.com:cookthebook/ftc_scouting.git
