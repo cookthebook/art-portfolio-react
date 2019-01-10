@@ -1,7 +1,7 @@
 {
   "main.css": "https://cookthebook.github.io/art-portfolio-react/static/css/main.8dbbec05.chunk.css",
-  "main.js": "https://cookthebook.github.io/art-portfolio-react/static/js/main.fc4c8f1b.chunk.js",
-  "main.js.map": "https://cookthebook.github.io/art-portfolio-react/static/js/main.fc4c8f1b.chunk.js.map",
+  "main.js": "https://cookthebook.github.io/art-portfolio-react/static/js/main.54b2155c.chunk.js",
+  "main.js.map": "https://cookthebook.github.io/art-portfolio-react/static/js/main.54b2155c.chunk.js.map",
   "static/css/1.b2c0836d.chunk.css": "https://cookthebook.github.io/art-portfolio-react/static/css/1.b2c0836d.chunk.css",
   "static/js/1.72f3c5d6.chunk.js": "https://cookthebook.github.io/art-portfolio-react/static/js/1.72f3c5d6.chunk.js",
   "static/js/1.72f3c5d6.chunk.js.map": "https://cookthebook.github.io/art-portfolio-react/static/js/1.72f3c5d6.chunk.js.map",
@@ -10,6 +10,6 @@
   "static/css/1.b2c0836d.chunk.css.map": "https://cookthebook.github.io/art-portfolio-react/static/css/1.b2c0836d.chunk.css.map",
   "static/css/main.8dbbec05.chunk.css.map": "https://cookthebook.github.io/art-portfolio-react/static/css/main.8dbbec05.chunk.css.map",
   "index.html": "https://cookthebook.github.io/art-portfolio-react/index.html",
-  "precache-manifest.79e4c56af2f7c650aee1b3b7a6954225.js": "https://cookthebook.github.io/art-portfolio-react/precache-manifest.79e4c56af2f7c650aee1b3b7a6954225.js",
+  "precache-manifest.7a265b2254a281809beb4805113e6b53.js": "https://cookthebook.github.io/art-portfolio-react/precache-manifest.7a265b2254a281809beb4805113e6b53.js",
   "service-worker.js": "https://cookthebook.github.io/art-portfolio-react/service-worker.js"
 }
