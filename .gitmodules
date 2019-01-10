@@ -1,4 +1,0 @@
-[submodule "public/ftc_scouting"]
-	path = public/ftc_scouting
-	url = https://github.com/cookthebook/ftc_scouting.git
-	branch = master
