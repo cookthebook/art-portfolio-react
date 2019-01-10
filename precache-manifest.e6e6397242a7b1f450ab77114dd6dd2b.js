@@ -4,15 +4,15 @@ self.__precacheManifest = [
     "url": "/art-portfolio-react/static/js/runtime~main.1fc312f8.js"
   },
   {
-    "revision": "40e6bed43e1234f3edd6",
-    "url": "/art-portfolio-react/static/js/main.40e6bed4.chunk.js"
+    "revision": "373c108d8d099ac64285",
+    "url": "/art-portfolio-react/static/js/main.373c108d.chunk.js"
   },
   {
     "revision": "72f3c5d62e55ebe0dba2",
     "url": "/art-portfolio-react/static/js/1.72f3c5d6.chunk.js"
   },
   {
-    "revision": "40e6bed43e1234f3edd6",
+    "revision": "373c108d8d099ac64285",
     "url": "/art-portfolio-react/static/css/main.8dbbec05.chunk.css"
   },
   {
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/art-portfolio-react/static/css/1.b2c0836d.chunk.css"
   },
   {
-    "revision": "fbbc413f234c17d99b44d5d4737a26c8",
+    "revision": "8ef686f56727e28568aeca9f5965d36a",
     "url": "/art-portfolio-react/index.html"
   }
 ];
