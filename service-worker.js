@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "https://cookthebook.github.io/art-portfolio-react/precache-manifest.27223b2c93f602176c67c4a230a49a85.js"
+  "/art-portfolio-react/precache-manifest.36f0e7494565723a2765b4d07c48e5a4.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("https://cookthebook.github.io/art-portfolio-react/index.html", {
+workbox.routing.registerNavigationRoute("/art-portfolio-react/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
