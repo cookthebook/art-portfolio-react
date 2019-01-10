@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "https://cookthebook.github.io/art-portfolio-react/precache-manifest.0f29f702acb772c3a17a7a3700bdf568.js"
+  "https://cookthebook.github.io/art-portfolio-react/precache-manifest.41058d14b4a58547cc0a7fcd780ced9d.js"
 );
 
 workbox.clientsClaim();
