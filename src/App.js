@@ -100,10 +100,10 @@ class App extends Component {
     };
 
     var sidebar_links = [
-      <Link className="SideLink" to={process.env.PUBLIC_URL + "/"} key='0'>Home</Link>,
-      <Link className="SideLink" to={process.env.PUBLIC_URL + "/gallery/" + images_all[0].key} key='1'>Slideshow</Link>,
-      <Link className="SideLink" to={process.env.PUBLIC_URL + "/blog/"} key='2'>Blog</Link>,
-      <Link className="SideLink" to={process.env.PUBLIC_URL + '/artprojects/'} key='3'>Art Projects</Link>,
+      <Link className="SideLink" to={"/"} key='0'>Home</Link>,
+      <Link className="SideLink" to={"/gallery/" + images_all[0].key} key='1'>Slideshow</Link>,
+      <Link className="SideLink" to={"/blog/"} key='2'>Blog</Link>,
+      <Link className="SideLink" to={'/artprojects/'} key='3'>Art Projects</Link>,
     ];
 
     var expanded = true;

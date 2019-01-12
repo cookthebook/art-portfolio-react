@@ -42,7 +42,7 @@ export class ZineFinal extends Component {
     return (
       <div className="ZineImgContainer container-fluid">
         {this.get_rows_from_data()}
-        <Link to={process.env.PUBLIC_URL + "/zinefinal/artiststatement/"} className="StatementLink">Artist Statement</Link>
+        <Link to={"/zinefinal/artiststatement/"} className="StatementLink">Artist Statement</Link>
         <a href="https://github.com/cookthebook/art-portfolio-react" className="StatementLink"><br />View the source code at GitHub</a>
       </div>
     )
@@ -69,7 +69,7 @@ export const ZinePageStatement = (props) => {
   return (
     <div className="ArtistStatementPage container-fluid">
       {paragraphs}
-      <Link to={process.env.PUBLIC_URL + "/zinefinal/"} className="ZineBackLink"><br />Back to final</Link>
+      <Link to={"/zinefinal/"} className="ZineBackLink"><br />Back to final</Link>
     </div>
   )
 }
