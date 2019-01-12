@@ -51,8 +51,8 @@ export const ArtProjectRoutes = () => {
 
   return (
     <div>
-      <Route exact path="/zinefinal/" component={ZinePage} className="ViewSwitcher" />
-      <Route exact path="/zinefinal/artiststatement/" component={ZineStatement} className="ViewSwitcher" />
+      <Route exact path={"/zinefinal/"} component={ZinePage} className="ViewSwitcher" />
+      <Route exact path={"/zinefinal/artiststatement/"} component={ZineStatement} className="ViewSwitcher" />
     </div>
   )
 }

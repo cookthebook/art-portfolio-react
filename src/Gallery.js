@@ -14,7 +14,7 @@ export const GridGallery = (props) => {
   var img_list = [];
   images.forEach((element, index) => {
     img_list.push(
-      <Link to={"/gallery/" + props.slideshow + "/" + element.key} className="GridElement" key={index} >
+      <Link to={process.env.PUBLIC_URL + "/gallery/" + props.slideshow + "/" + element.key} className="GridElement" key={index} >
         <ImagePreview image={element.image} />
       </Link>
     );
@@ -40,7 +40,7 @@ export const GridGallery = (props) => {
       <ListGroupItem className="GridTitle">
         <h3 className="GridTitle">
           {props.slideshow != null ? (
-            <Link to={"/gallery/" + props.slideshow + "/" + images[0].key} className="GridTitle">{props.title}</Link>
+            <Link to={process.env.PUBLIC_URL + "/gallery/" + props.slideshow + "/" + images[0].key} className="GridTitle">{props.title}</Link>
           ) : (
             props.title
           )}
@@ -139,7 +139,7 @@ const FocusGalleryPagination = (props) => {
   } else {
     newer_link = (
       <PaginationItem onClick={() => callback(images[index-1].key)}>
-        <Link to={images[index-1].key} className="page-link">
+        <Link to={process.env.PUBLIC_URL + '/gallery/' + images[index-1].key} className="page-link">
           Newer
         </Link>
       </PaginationItem>
@@ -156,7 +156,7 @@ const FocusGalleryPagination = (props) => {
   } else {
     older_link = (
       <PaginationItem onClick={() => callback(images[index+1].key)}>
-        <Link to={images[index+1].key} className="page-link">
+        <Link to={process.env.PUBLIC_URL + '/gallery/' + images[index+1].key} className="page-link">
           Older
         </Link>
       </PaginationItem>
@@ -167,7 +167,7 @@ const FocusGalleryPagination = (props) => {
   for (let i = 0; i < (images.length >= 5 ? 5 : images.length); i++) {
     numbered_links.push(
       <PaginationItem className={(first + i === index) ? "disabled" : ""} onClick={() => callback(images[first + i].key)}>
-        <Link to={images[first].key} className="page-link">{first + i + 1}</Link>
+        <Link to={process.env.PUBLIC_URL + '/gallery/' + images[first].key} className="page-link">{first + i + 1}</Link>
       </PaginationItem>
     )
   }

@@ -29,7 +29,7 @@ export const ImageView = (props) => {
       {image.videofile != null ? (
         <CardVideo videofile={image.videofile} />
       ) : (
-        <CardImg top src={"/images/fulls/" + image.filename} alt={image.title} className="ImageView-img" />
+        <CardImg top src={process.env.PUBLIC_URL + "/images/fulls/" + image.filename} alt={image.title} className="ImageView-img" />
       )}
       <CardBody inverse="true">
         <CardTitle>{image.title}</CardTitle>
@@ -44,7 +44,7 @@ ImageView.propTypes = {
 
 const CardVideo = (props) => {
   return (
-    <video controls src={"/images/fulls/" + props.videofile} />
+    <video controls src={process.env.PUBLIC_URL + "/images/fulls/" + props.videofile} />
   )
 }
 
@@ -56,7 +56,7 @@ export const ImagePreview = (props) => {
   const { image } = props;
   return (
     <Card className="ImagePreview">
-      <CardImg top width="100%" src={"/images/thumbs/" + image.filename} alt={image.title} />
+      <CardImg top width="100%" src={process.env.PUBLIC_URL + "/images/thumbs/" + image.filename} alt={image.title} />
       <CardBody inverse="true">
         <CardTitle>{image.title}</CardTitle>
       </CardBody>

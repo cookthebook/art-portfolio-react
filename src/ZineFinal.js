@@ -28,7 +28,7 @@ export class ZineFinal extends Component {
       rows.push(
         <Row className="ZineImgRow" key={entry.key}>
           {entry.image ?
-            <img className="ZineImg" src={"/images/zine_resources/" + entry.image} alt={entry.name} /> :
+            <img className="ZineImg" src={process.env.PUBLIC_URL + "/images/zine_resources/" + entry.image} alt={entry.name} /> :
             null
           }
           {get_texts(entry.texts)}
@@ -42,8 +42,8 @@ export class ZineFinal extends Component {
     return (
       <div className="ZineImgContainer container-fluid">
         {this.get_rows_from_data()}
-        <Link to="/zinefinal/artiststatement/" className="StatementLink">Artist Statement</Link>
-        <a href="https://github.com/cookthebook/art-portfolio-react/tree/zines_project" className="StatementLink"><br />View the source code at GitHub</a>
+        <Link to={process.env.PUBLIC_URL + "/zinefinal/artiststatement/"} className="StatementLink">Artist Statement</Link>
+        <a href="https://github.com/cookthebook/art-portfolio-react" className="StatementLink"><br />View the source code at GitHub</a>
       </div>
     )
   }
@@ -69,7 +69,7 @@ export const ZinePageStatement = (props) => {
   return (
     <div className="ArtistStatementPage container-fluid">
       {paragraphs}
-      <Link to="/zinefinal/" className="ZineBackLink"><br />Back to final</Link>
+      <Link to={process.env.PUBLIC_URL + "/zinefinal/"} className="ZineBackLink"><br />Back to final</Link>
     </div>
   )
 }

@@ -100,11 +100,10 @@ class App extends Component {
     };
 
     var sidebar_links = [
-      <Link className="SideLink" to="/" key='0'>Home</Link>,
-      <Link className="SideLink" to={"/gallery/" + images_all[0].key} key='1'>Slideshow</Link>,
-      <Link className="SideLink" to="/blog/" key='2'>Blog</Link>,
-      <Link className="SideLink" to='/artprojects/' key='3'>Art Projects</Link>,
-      // <Link className="SideLink" to={"/zinefinal/"} key='4'>Comics and Zines Final</Link>
+      <Link className="SideLink" to={process.env.PUBLIC_URL + "/"} key='0'>Home</Link>,
+      <Link className="SideLink" to={process.env.PUBLIC_URL + "/gallery/" + images_all[0].key} key='1'>Slideshow</Link>,
+      <Link className="SideLink" to={process.env.PUBLIC_URL + "/blog/"} key='2'>Blog</Link>,
+      <Link className="SideLink" to={process.env.PUBLIC_URL + '/artprojects/'} key='3'>Art Projects</Link>,
     ];
 
     var expanded = true;
@@ -154,15 +153,15 @@ class App extends Component {
     }
 
     return (
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <div>
           <div className="App">
             <Sidebar links={sidebar_links} hideCallback={hideSidebar} />
             <Switch className="ViewSwitcher">
-              <Route exact path="/" component={Home} className="ViewSwitcher" />
-              <Route exact path="/gallery/:key" component={SlideshowAll} className="ViewSwitcher" />
-              <Route exact path="/blog/" component={BlogPage} className="ViewSwitcher" />
-              <Route exact path='/artprojects/' component={ProjectIndexPage} className='ViewSwitcher' />
+              <Route exact path={"/"} component={Home} className="ViewSwitcher" />
+              <Route exact path={"/gallery/:key"} component={SlideshowAll} className="ViewSwitcher" />
+              <Route exact path={"/blog"} component={BlogPage} className="ViewSwitcher" />
+              <Route exact path={'/artprojects'} component={ProjectIndexPage} className='ViewSwitcher' />
               {routes}
               {ArtProjectRoutes()}
             </Switch>
