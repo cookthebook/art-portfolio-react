@@ -78,7 +78,7 @@ jobs:
 
       - run:
           name: Push new build
-          command: cd cookthebook.github.io; git add --all; git commit -m "Deploy"; git push
+          command: cd cookthebook.github.io; git add --all; git commit -m "Deploy for "$(date); git push
 
 
 
