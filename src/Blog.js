@@ -20,6 +20,11 @@ export class Blog extends Component {
             <p className="BlogPostBody">{element.text}</p>
           );
           break;
+        case "embed_html":
+            bodySections.push(
+              <div className="BlogPostBody" dangerouslySetInnerHTML={{__html: element.html}} />
+            )
+            break;
         case "image":
           bodySections.push(
             <img src={process.env.PUBLIC_URL + element.src} style={element.style} alt={element.src} />

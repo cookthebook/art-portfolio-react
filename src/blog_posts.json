@@ -53,6 +53,42 @@
           "text": "Now that I am thinking about it, I want to revive my final project from Intro to Digital Drawing, two pages to an animated webcomic. I think a page indexing that project and now my Zines, Comics, and Books final could be pretty neat. I'll have to rip that old HTML from the now dead Apache server, luckily it is on the same VPS so it's not deleted. I'm taking Intermediate Digital Drawing in Spring 2019, so I'll probably have some more web-based projects to upload."
         }
       ]
+    },
+    {
+      "title": "New Domain, Github Pages, and Circle CI",
+      "date": "01-13-2019",
+      "author": "Aaron",
+      "body": [
+        {
+          "type": "text",
+          "text": "Many changes have occurred within the past week or so. The website has a new official domain! I  got aarongc.com from Google for a relatively decent price. I still own aaroncook.xyz, and I might keep it around just so someone else doesn't buy it."
+        },
+        {
+          "type": "image",
+          "src": "/images/blog/github-logo-1.png",
+          "style": {
+            "max-width": "15%",
+            "max-height": "15%",
+            "padding-bottom": "1em"
+          }
+        },
+        {
+          "type": "embed_html",
+          "html": "<p>I also was able to cancel my VPS (Woot Hosting, they were trash by the way) in favor of just using <a href='https://pages.github.com/'>Github Pages</a>. I was only using the server to host this site anyways, so paying for a full root access box just didn't make sense any more.</p>"
+        },
+        {
+          "type": "image",
+          "src": "/images/blog/logo-circleci.png",
+          "style": {
+            "max-width": "20%",
+            "max-height": "20%"
+          }
+        },
+        {
+          "type": "embed_html",
+          "html": "<p>I've also got <a href='https://circleci.com'>Circle CI</a> setup to automatically deploy any new commits pushed to master on GitHub. Thus, updating the website is as simple as pushing a new commit from my PC. I'm very happy with the progress I have made so far with the state of this website. There are still a few issues I want to address though. The individual gallery slideshows are broken, and I need to reassemble my final project from Introduction to Digital Drawing.</p>"
+        }
+      ]
     }
   ]
 }
