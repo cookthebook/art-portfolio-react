@@ -1,10 +1,12 @@
 h3.GridTitle {
   color: #d0d0d0;
   background-color: #222;
+  font-family: monospace;
 }
 
 a.GridTitle {
   color: #d0d0d0;
+  font-family: monospace;
 }
 
 a.GridTitle:hover {
@@ -42,6 +44,7 @@ li.GridTitle {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  font-family: monospace;
 }
 
 

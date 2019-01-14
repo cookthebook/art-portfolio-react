@@ -1,5 +1,5 @@
 .ArtProjectsTitle {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: monospace;
   color: #d0d0d0;
   font-size: 60px;
 }
@@ -17,7 +17,7 @@
 .ProjectLink {
   text-decoration: none;
   font-size: 40px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: monospace;
   color: #d0d0d0;
 }
 
@@ -29,4 +29,5 @@
 .ProjectDescription {
   color: #d0d0d0;
   overflow-x: auto;
+  font-family: monospace;
 }

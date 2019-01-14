@@ -13,6 +13,7 @@
 
 .ImageView .card-title {
   color: #f0f0f0;
+  font-family: monospace;
 }
 
 
@@ -37,6 +38,7 @@
 
 .ImagePreview .card-title {
   color: #d0d0d0;
+  font-family: monospace;
 }
 
 .ImagePreview .card-title:hover {
