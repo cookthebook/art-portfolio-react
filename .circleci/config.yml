@@ -47,12 +47,6 @@ jobs:
           - v1-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
-      - run:
-          name: Install CircleCI and deploy dependencies
-          command: apk add --no-cache ca-certificates git openssh
-      - run:
-          name: Install Yarn
-          command: npm install -g yarn
       - save_cache:
           paths:
             - node_modules
