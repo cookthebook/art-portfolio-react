@@ -89,6 +89,21 @@
           "html": "<p>I've also got <a href='https://circleci.com'>Circle CI</a> setup to automatically deploy any new commits pushed to master on GitHub. Thus, updating the website is as simple as pushing a new commit from my PC. I'm very happy with the progress I have made so far with the state of this website. There are still a few issues I want to address though. The individual gallery slideshows are broken, and I need to reassemble my final project from Introduction to Digital Drawing.</p>"
         }
       ]
+    },
+    {
+      "title": "Site Bug Fixes",
+      "date": "01-15-2019",
+      "author": "Aaron",
+      "body": [
+        {
+          "type": "text",
+          "text": "I have been making small updates to the site lately. GitHub pages had issues routing brand new pages that aren't the index page. I used a common 404 error rerouting trick to fix it. I also fixed the issues the individual gallery slideshows had when trying to navigate. Oh, and I updated the site favicon (the image on the browser tab):"
+        },
+        {
+          "type": "image",
+          "src": "/favicon.ico"
+        }
+      ]
     }
   ]
 }

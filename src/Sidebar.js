@@ -7,9 +7,11 @@ export const Sidebar = (props) => {
   var { hideCallback, links } = props;
 
   var links_formatted = [];
+  var divider_key = -1
   links.forEach(link => {
     links_formatted.push(link);
-    links_formatted.push(<hr className="SideDivider" />);
+    links_formatted.push(<hr className="SideDivider" key={divider_key} />);
+    divider_key = divider_key - 1;
   });
 
   return (
