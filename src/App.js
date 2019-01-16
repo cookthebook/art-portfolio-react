@@ -50,7 +50,7 @@ class App extends Component {
       const TempGallery = ({ match }) => {
         return (
           <div>
-            <FocusGallery images={galleries[index].props.images} match={match} />
+            <FocusGallery images={galleries[index].props.images} name={gallery.name} match={match} />
           </div>
         )
       }

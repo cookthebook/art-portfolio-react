@@ -68,6 +68,7 @@ export class FocusGallery extends Component {
   constructor (props) {
     super(props);
     this.images = props.images;
+    this.name = props.name;
 
     var index = this.images.findIndex(element => {
       return (element.key === props.match.params.key);
@@ -103,7 +104,7 @@ export class FocusGallery extends Component {
   render () {
     return (
       <div className="FocusView">
-        <FocusGalleryPagination index={this.state.index} images={this.images} callback={this.change_focus} />
+        <FocusGalleryPagination index={this.state.index} images={this.images} name={this.name} callback={this.change_focus} />
         <ImageView image={this.images[this.state.index].image} />
       </div>
     )
@@ -118,8 +119,9 @@ FocusGallery.propTypes = {
 };
 
 const FocusGalleryPagination = (props) => {
-  const { index, images, callback } = props;
+  const { index, images, name, callback } = props;
   var first;
+  const gallery_path = name === '' ? '/gallery/' : '/gallery/' + name + '/'
 
   if (index < 3) {
     first = 0;
@@ -139,7 +141,7 @@ const FocusGalleryPagination = (props) => {
   } else {
     newer_link = (
       <PaginationItem onClick={() => callback(images[index-1].key)}>
-        <Link to={'/gallery/' + images[index-1].key} className="page-link">
+        <Link to={gallery_path + images[index-1].key} className="page-link">
           Newer
         </Link>
       </PaginationItem>
@@ -156,7 +158,7 @@ const FocusGalleryPagination = (props) => {
   } else {
     older_link = (
       <PaginationItem onClick={() => callback(images[index+1].key)}>
-        <Link to={'/gallery/' + images[index+1].key} className="page-link">
+        <Link to={gallery_path + images[index+1].key} className="page-link">
           Older
         </Link>
       </PaginationItem>
@@ -167,7 +169,7 @@ const FocusGalleryPagination = (props) => {
   for (let i = 0; i < (images.length >= 5 ? 5 : images.length); i++) {
     numbered_links.push(
       <PaginationItem className={(first + i === index) ? "disabled" : ""} onClick={() => callback(images[first + i].key)}>
-        <Link to={'/gallery/' + images[first].key} className="page-link">{first + i + 1}</Link>
+        <Link to={gallery_path + images[first].key} className="page-link">{first + i + 1}</Link>
       </PaginationItem>
     )
   }
