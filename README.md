@@ -5,4 +5,4 @@
 
 My personal art portfolio, built with React.
 
-Site is now live at [aaroncook.xyz](http://www.aaroncook.xyz).
+Site is now live at [aarongc.com](http://aarongc.com).
