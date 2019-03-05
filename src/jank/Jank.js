@@ -44,15 +44,18 @@ function checkDeckLegality(cardList) {
   var deckPoints = 0;
   var ret = null;
 
+  var mainBoardCards = []
   // Basic decksize check and point check
+  console.log('Checking mainboard');
   cardList.forEach(card => {
-    console.log('Checking card: ' + card.name);
-
     if (card.pointCost < 0) {
       ret = (<p>NOT LEGAL: Card {card.name} not found.</p>);
     }
   
-    deckSize = deckSize + card.count;
+    mainBoardCards.push(card.name);
+    if (!(card.isSideboard)){
+      deckSize = deckSize + card.count;
+    }
     deckPoints = deckPoints + (card.count * card.pointCost);
   });
 
@@ -89,12 +92,56 @@ function checkDeckLegality(cardList) {
   console.log('Can have ' + xOfCount.toString() + '-of\'s');
 
   cardList.forEach(card => {
-    console.log('Checking count for ' + card.name);
-    console.log('Count: ' + card.count.toString());
+    if (card.isSideboard) {
+      return null;
+    }
     if (!(INFINITE_CARDS.includes(card.name)) && card.count > xOfCount) {
       ret = (<p>NOT LEGAL: Cannot have {card.count} {card.name}</p>);
     }
   });
+
+  if (ret) {
+    return ret;
+  }
+
+  // Check sideboard
+  console.log('Checking sideboard');
+  var sideboardCount = 0;
+  cardList.forEach(card => {
+    if (!card.isSideboard) {
+      return null;
+    }
+    sideboardCount = sideboardCount + card.count;
+
+    if (mainBoardCards.includes(card.name)) {
+      var mainBoardCount = 0;
+      cardList.forEach(mainBoardCard => {
+        if (mainBoardCard.name === card.name && !(mainBoardCard.isSideboard)) {
+          mainBoardCount = mainBoardCard.count;
+        }
+      });
+
+      if (!(INFINITE_CARDS.includes(card.name)) && mainBoardCount + card.count > xOfCount) {
+        ret = (<p>NOT LEGAL: Cannot have {mainBoardCount + card.count} {card.name} (sideboard)</p>)
+      }
+    } else {
+      if (!(INFINITE_CARDS.includes(card.name)) && card.count > xOfCount) {
+        ret = (<p>NOT LEGAL: Cannot have {card.count} {card.name} (sideboard)</p>)
+      }
+    }
+  });
+
+  if (deckSize < 40) {
+    return (<p>NOT LEGAL: Fewer than 40 cards</p>);
+  } else if (deckSize >= 40 && deckSize < 50 && sideboardCount > 8) {
+    return (<p>NOT LEGAL: Too many sidebard cards ({sideboardCount}) for a less than 50 card deck (max 8)</p>);
+  } else if (deckSize >= 50 && deckSize < 60 && sideboardCount > 10) {
+    return (<p>NOT LEGAL: Too many sidebard cards ({sideboardCount}) for a less than 60 card deck (max 10)</p>);
+  } else if (deckSize >= 60 && deckSize < 70 && sideboardCount > 12) {
+    return (<p>NOT LEGAL: Too many sidebard cards ({sideboardCount}) for a less than 70 card deck (max 12)</p>);
+  } else if (deckSize >= 70 && sideboardCount > 14) {
+    return (<p>NOT LEGAL: Too many sidebard cards ({sideboardCount}) for a greater than 70 card deck (max 14)</p>);
+  }
 
   if (ret) {
     return ret;
@@ -110,6 +157,7 @@ export class Jank extends Component {
     this.state = {
       cards: [],
       cardsHTML: [],
+      sideboardHTML: [],
       deckSize: -1,
       processedSize: 0,
       legalResult: (<div></div>)
@@ -124,16 +172,49 @@ export class Jank extends Component {
     console.log('Adding card: ' + card.name);
     var oldCards = this.state.cards;
     var oldCardsHTML = this.state.cardsHTML;
+    var oldSideboardHTML = this.state.sideboardHTML;
     const oldProcessedSize = this.state.processedSize;
   
-    this.setState({
-      cards: oldCards.concat(card),
-      cardsHTML: oldCardsHTML.concat(<MTGCard name={card.name} count={card.count} link={card.imageLink} />),
-      processedSize: oldProcessedSize + card.count
+    var isInDeck = false;
+
+    oldCards.forEach(currCard => {
+      if (currCard.name === card.name && (currCard.isSideboard === card.isSideboard)) {
+        isInDeck = true;
+        currCard.count = currCard.count + card.count;
+      }
     });
 
+    if (isInDeck) {
+      console.log('Card ' + card.name + ' already in deck, adding to count');
+      this.setState({
+        cards: oldCards
+      })
+    } else {
+      this.setState({
+        cards: oldCards.concat(card)
+      });
+    }
+
+    if (card.isSideboard) {
+      if (this.state.sideboardHTML.length <= 0) {
+        oldSideboardHTML.push(<p>Sideboard</p>);
+      }
+      this.setState({
+        sideboardHTML: oldSideboardHTML.concat(<MTGCard name={card.name} count={card.count} link={card.imageLink} />),
+        processedSize: oldProcessedSize + card.count
+      });
+    } else {
+      if (this.state.cardsHTML.length <= 0) {
+        oldCardsHTML.push(<div><p>Main Board</p></div>);
+      }
+      this.setState({
+        cardsHTML: oldCardsHTML.concat(<MTGCard name={card.name} count={card.count} link={card.imageLink} />),
+        processedSize: oldProcessedSize + card.count
+      })
+    }
+
     console.log('Checking if done with processing');
-    if (this.state.processedSize >= this.state.deckSize) {
+    if (this.state.processedSize === this.state.deckSize) {
       console.log('Final processed deck:');
       console.log(this.state.cards);
       this.setState({
@@ -144,7 +225,7 @@ export class Jank extends Component {
     }
   }
 
-  getCardInfo(exactName, count) {
+  getCardInfo(exactName, count, isSideboard) {
     // Form Scryfall API query
     let query = 'https://api.scryfall.com/cards/search?order=released&unique=prints&q=';
     query += '!"' + exactName + '"';
@@ -165,6 +246,7 @@ export class Jank extends Component {
           sets: [],
           count: count,
           pointCost: -1,
+          isSideboard: isSideboard,
           imageLink: ''
         });
         return null;
@@ -176,6 +258,7 @@ export class Jank extends Component {
         sets: [],
         count: count,
         pointCost: -1,
+        isSideboard: isSideboard,
         imageLink: ''
       };
 
@@ -216,11 +299,13 @@ export class Jank extends Component {
       console.log('Finished processing card: ' + newCard.name);
       this.updateResultList(newCard);
     }).catch(err => {
+      console.log('NETWORK ERROR');
       this.updateResultList({
         name: exactName,
         sets: [],
         count: count,
         pointCost: -1,
+        isSideboard: isSideboard,
         imageLink: ''
       });
       return null;
@@ -232,15 +317,27 @@ export class Jank extends Component {
       this.setState({
         cards: [],
         cardsHTML: [],
-        legalResult: (<div></div>)
+        sideboardHTML: [],
+        legalResult: (<div></div>),
+        deckSize: 0,
+        processedSize: 0
       });
     }
-    let deckText = document.getElementById('deckList').value
+    let deckText = document.getElementById('deckList').value;
+    let sideboardText = document.getElementById('sideboard').value;
     console.log('Deck list:')
     console.log(deckText)
     var totalDeckSize = 0;
 
     deckText.split('\n').forEach(cardText => {
+      let count = parseInt(cardText.split(' ')[0])
+      let card = cardText.split(' ').slice(1).join(' ')
+
+      if (count && card) {
+        totalDeckSize = totalDeckSize + count;
+      }
+    });
+    sideboardText.split('\n').forEach(cardText => {
       let count = parseInt(cardText.split(' ')[0])
       let card = cardText.split(' ').slice(1).join(' ')
 
@@ -258,7 +355,15 @@ export class Jank extends Component {
       let card = cardText.split(' ').slice(1).join(' ')
 
       if (count && card) {
-        this.getCardInfo(card, count);
+        this.getCardInfo(card, count, false);
+      }
+    });
+    sideboardText.split('\n').forEach(cardText => {
+      let count = parseInt(cardText.split(' ')[0])
+      let card = cardText.split(' ').slice(1).join(' ')
+
+      if (count && card) {
+        this.getCardInfo(card, count, true);
       }
     });
   }
@@ -269,12 +374,15 @@ export class Jank extends Component {
         <Form className='JankCardFinder container'>
           <FormGroup>
             <Label for='deckList'>Submit Decklist</Label>
-            <Input type='textarea' id='deckList' placeholder='Enter card name' />
+            <Input type='textarea' id='deckList' placeholder='Enter Deck List (<card count> <card name>)' />
+            <Label for='sideboard'>Submit Sideboard</Label>
+            <Input type='textarea' id='sideboard' placeholder='Enter Sideboard (<card count> <card name>)' />
           </FormGroup>
           <Button onClick={this.processDeck}>Find!</Button>
           <br />
           <br />
           {this.state.cardsHTML}
+          {this.state.sideboardHTML}
           {this.state.legalResult}
         </Form>
       </div>
