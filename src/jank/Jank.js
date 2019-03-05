@@ -37,12 +37,82 @@ function getScryfallData(query) {
   });
 }
 
+const INFINITE_CARDS = ['persistent petitioners', 'rat colony', 'plains', 'forest', 'island', 'swamp', 'mountian', 'wastes'];
+
+function checkDeckLegality(cardList) {
+  var deckSize = 0;
+  var deckPoints = 0;
+  var ret = null;
+
+  // Basic decksize check and point check
+  cardList.forEach(card => {
+    console.log('Checking card: ' + card.name);
+
+    if (card.pointCost < 0) {
+      ret = (<p>NOT LEGAL: Card {card.name} not found.</p>);
+    }
+  
+    deckSize = deckSize + card.count;
+    deckPoints = deckPoints + (card.count * card.pointCost);
+  });
+
+  if (ret) {
+    return ret;
+  }
+
+  var xOfCount = 0;
+
+  if (deckSize < 40) {
+    return (<p>NOT LEGAL: Fewer than 40 cards</p>);
+  } else if (deckSize >= 40 && deckSize < 50 ) {
+    if (deckPoints > 22) {
+      return (<p>NOT LEGAL: Too many card points used ({deckPoints}) for a less than 50 card deck (max 22)</p>);
+    }
+    xOfCount = 1;
+  } else if (deckSize >= 50 && deckSize < 60) {
+    if (deckPoints > 25) {
+      return (<p>NOT LEGAL: Too many card points used ({deckPoints}) for a less than 60 card deck (max 25)</p>);
+    }
+    xOfCount = 2;
+  } else if (deckSize >= 60 && deckSize < 70) {
+    if (deckPoints > 28) {
+      return (<p>NOT LEGAL: Too many card points used ({deckPoints}) for a less than 70 card deck (max 28)</p>);
+    }
+    xOfCount = 3;
+  } else if (deckSize >= 70) {
+    if (deckPoints > 31) {
+      return (<p>NOT LEGAL: Too many card points used ({deckPoints}) for a 70 or greater card deck (max 31)</p>);
+    }
+    xOfCount = 4;
+  }
+
+  console.log('Can have ' + xOfCount.toString() + '-of\'s');
+
+  cardList.forEach(card => {
+    console.log('Checking count for ' + card.name);
+    console.log('Count: ' + card.count.toString());
+    if (!(INFINITE_CARDS.includes(card.name)) && card.count > xOfCount) {
+      ret = (<p>NOT LEGAL: Cannot have {card.count} {card.name}</p>);
+    }
+  });
+
+  if (ret) {
+    return ret;
+  }
+
+  return (<p>DECK LEGAL</p>);
+}
+
 export class Jank extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      cards: []
+      cards: [],
+      cardsHTML: [],
+      deckSize: -1,
+      processedSize: 0,
+      legalResult: (<div></div>)
     };
 
     this.processDeck = this.processDeck.bind(this);
@@ -51,16 +121,27 @@ export class Jank extends Component {
   }
 
   updateResultList(card) {
-    console.log('Adding card: ');
-    console.log(card);
-    console.log('To:');
-    console.log(this.state.cards);
+    console.log('Adding card: ' + card.name);
     var oldCards = this.state.cards;
+    var oldCardsHTML = this.state.cardsHTML;
+    const oldProcessedSize = this.state.processedSize;
+  
     this.setState({
-      cards: oldCards.concat([<MTGCard name={card.name} count={card.count} />])
+      cards: oldCards.concat(card),
+      cardsHTML: oldCardsHTML.concat(<MTGCard name={card.name} count={card.count} link={card.imageLink} />),
+      processedSize: oldProcessedSize + card.count
     });
-    console.log('Current deck:');
-    console.log(this.state.cards);
+
+    console.log('Checking if done with processing');
+    if (this.state.processedSize >= this.state.deckSize) {
+      console.log('Final processed deck:');
+      console.log(this.state.cards);
+      this.setState({
+        legalResult: checkDeckLegality(this.state.cards)
+      });
+    } else {
+      console.log('Processed ' + this.state.processedSize.toString() + ' cards');
+    }
   }
 
   getCardInfo(exactName, count) {
@@ -73,13 +154,19 @@ export class Jank extends Component {
     });
     query += ')';
 
-    console.log(query);
     let cardJSON = null;
 
     getScryfallData(query).then(value => {
       cardJSON = JSON.parse(value);
-      if (!cardJSON.data) {
+      if (cardJSON === undefined || cardJSON['data'] === undefined) {
         console.log('No data found for card: ' + exactName);
+        this.updateResultList({
+          name: exactName,
+          sets: [],
+          count: count,
+          pointCost: -1,
+          imageLink: ''
+        });
         return null;
       }
 
@@ -88,25 +175,18 @@ export class Jank extends Component {
         name: exactName,
         sets: [],
         count: count,
-        pointCost: -1
+        pointCost: -1,
+        imageLink: ''
       };
 
       if (DREADED_CARDS.includes(exactName)) {
         newCard.pointCost = 4;
       }
 
-      console.log(cardJSON.data);
-
       cardJSON.data.forEach(cardObject => {
-        console.log(newCard);
-        console.log('Processing:');
-        console.log(cardObject.set.toUpperCase());
-
         cardObject.name = cleanCardName(cardObject.name);
         if (cardObject.name === newCard.name) {
-          console.log('Found match');
           newCard.sets.push(cardObject.set.toUpperCase());
-          console.log('Added set: ' + cardObject.set.toUpperCase());
 
           // Use newest printing rarity
           if (newCard.pointCost === -1) {
@@ -127,23 +207,52 @@ export class Jank extends Component {
                 break;
             }
           }
+
+          if (newCard.imageLink === '') {
+            newCard.imageLink = cardObject.image_uris.large;
+          }
         }
-        console.log('Done');
       });
-      console.log('Finished processing card');
+      console.log('Finished processing card: ' + newCard.name);
       this.updateResultList(newCard);
+    }).catch(err => {
+      this.updateResultList({
+        name: exactName,
+        sets: [],
+        count: count,
+        pointCost: -1,
+        imageLink: ''
+      });
+      return null;
     });
   }
 
   processDeck() {
     if (this.state.cards.length > 0) {
       this.setState({
-        cards: []
+        cards: [],
+        cardsHTML: [],
+        legalResult: (<div></div>)
       });
     }
     let deckText = document.getElementById('deckList').value
     console.log('Deck list:')
     console.log(deckText)
+    var totalDeckSize = 0;
+
+    deckText.split('\n').forEach(cardText => {
+      let count = parseInt(cardText.split(' ')[0])
+      let card = cardText.split(' ').slice(1).join(' ')
+
+      if (count && card) {
+        totalDeckSize = totalDeckSize + count;
+      }
+    });
+    console.log('Found deck of size: ' + totalDeckSize.toString());
+    this.setState({
+      deckSize: totalDeckSize
+    });
+
     deckText.split('\n').forEach(cardText => {
       let count = parseInt(cardText.split(' ')[0])
       let card = cardText.split(' ').slice(1).join(' ')
@@ -151,7 +260,7 @@ export class Jank extends Component {
       if (count && card) {
         this.getCardInfo(card, count);
       }
-    })
+    });
   }
 
   render() {
@@ -162,9 +271,11 @@ export class Jank extends Component {
             <Label for='deckList'>Submit Decklist</Label>
             <Input type='textarea' id='deckList' placeholder='Enter card name' />
           </FormGroup>
-          <br />
           <Button onClick={this.processDeck}>Find!</Button>
-          {this.state.cards}
+          <br />
+          <br />
+          {this.state.cardsHTML}
+          {this.state.legalResult}
         </Form>
       </div>
     )
@@ -176,11 +287,12 @@ class MTGCard extends Component {
     super(props);
     this.name = props.name;
     this.count = props.count;
+    this.link = props.link;
   }
 
   render() {
     return (<div>
-      <p>{this.count}x {this.name}</p>
+      <p>{this.count} x <a href={this.link}>{this.name}</a></p>
     </div>);
   }
 }
