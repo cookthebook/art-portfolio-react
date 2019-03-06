@@ -37,7 +37,7 @@ function getScryfallData(query) {
   });
 }
 
-const INFINITE_CARDS = ['persistent petitioners', 'rat colony', 'plains', 'forest', 'island', 'swamp', 'mountian', 'wastes'];
+const INFINITE_CARDS = ['persistent petitioners', 'rat colony', 'plains', 'forest', 'island', 'swamp', 'mountain', 'wastes'];
 
 function checkDeckLegality(cardList) {
   var deckSize = 0;
