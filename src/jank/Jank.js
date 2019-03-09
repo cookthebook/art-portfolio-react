@@ -228,7 +228,7 @@ export class Jank extends Component {
   getCardInfo(exactName, count, isSideboard) {
     // Form Scryfall API query
     let query = 'https://api.scryfall.com/cards/search?order=released&unique=prints&q=';
-    query += '!"' + exactName.replace(/ \/\//g, '') + '"';
+    query += '!"' + exactName + '"';
     query += '+(';
     LEGAL_SETS.forEach(set => {
       query += 'set%3A' + set + '+OR+'
@@ -293,7 +293,12 @@ export class Jank extends Component {
           }
 
           if (newCard.imageLink === '') {
-            newCard.imageLink = cardObject.image_uris.large;
+            if (cardObject.image_uris) {
+              newCard.imageLink = cardObject.image_uris.large;
+            } else {
+              // Double sided card
+              newCard.imageLink = cardObject.card_faces[0].image_uris.large + ',' + cardObject.card_faces[1].image_uris.large
+            }
           }
         }
       });
@@ -301,6 +306,7 @@ export class Jank extends Component {
       this.updateResultList(newCard);
     }).catch(err => {
       console.log('NETWORK ERROR');
+      console.log(err);
       this.updateResultList({
         name: exactName,
         sets: [],
@@ -401,7 +407,10 @@ class MTGCard extends Component {
 
   render() {
     return (<div>
-      <p>{this.count} x <a href={this.link}>{this.name}</a></p>
+      {this.link.includes(',') ?
+        <p>{this.count} x <a href={this.link.split(',')[0]}>{this.name.split('//')[0]}</a> {'//'} <a href={this.link.split(',')[1]}>{this.name.split('//')[1]}</a></p>:
+        <p>{this.count} x <a href={this.link}>{this.name}</a></p>
+      }
     </div>);
   }
 }
