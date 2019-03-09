@@ -228,12 +228,13 @@ export class Jank extends Component {
   getCardInfo(exactName, count, isSideboard) {
     // Form Scryfall API query
     let query = 'https://api.scryfall.com/cards/search?order=released&unique=prints&q=';
-    query += '!"' + exactName + '"';
+    query += '!"' + exactName.replace(/ \/\//g, '') + '"';
     query += '+(';
     LEGAL_SETS.forEach(set => {
       query += 'set%3A' + set + '+OR+'
     });
     query += ')';
+    console.log(query);
 
     let cardJSON = null;
 
