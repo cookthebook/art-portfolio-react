@@ -94,14 +94,14 @@ class App extends Component {
     const SlideshowAll = ({ match }) => {
       return (
         <div>
-          <FocusGallery images={images_all} match={match} />
+          <FocusGallery images={images_all} match={match} name='all' />
         </div>
       );
     };
 
     var sidebar_links = [
       <Link className="SideLink" to={"/"} key='0'>Home</Link>,
-      <Link className="SideLink" to={"/gallery/" + images_all[0].key} key='1'>Slideshow</Link>,
+      <Link className="SideLink" to={"/gallery/all/" + images_all[0].key} key='1'>Slideshow</Link>,
       <Link className="SideLink" to={"/blog/"} key='2'>Blog</Link>,
       <Link className="SideLink" to={'/projects/'} key='3'>Projects</Link>,
     ];
@@ -159,7 +159,7 @@ class App extends Component {
             <Sidebar links={sidebar_links} hideCallback={hideSidebar} />
             <Switch className="ViewSwitcher">
               <Route exact path={"/"} component={Home} className="ViewSwitcher" />
-              <Route exact path={"/gallery/:key"} component={SlideshowAll} className="ViewSwitcher" />
+              <Route exact path={"/gallery/all/:key"} component={SlideshowAll} className="ViewSwitcher" />
               <Route exact path={"/blog"} component={BlogPage} className="ViewSwitcher" />
               <Route exact path={'/projects'} component={ProjectIndexPage} className='ViewSwitcher' />
               {routes}
