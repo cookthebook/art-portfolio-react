@@ -3,9 +3,12 @@ import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
 
 import './Jank.scss'
 
-const LEGAL_SETS = ['RNA', 'GRN', 'DOM', 'RIX', 'XLN', 'HOU', 'AKH', 'AER', 'KLD', 'EMN', 'SOI', 'OGW', 'BFZ', 'DTK', 'FRF', 'KTK', 'JOU', 'BNG', 'THS', 'DGM', 'GTC', 'RTR', 'M19', 'ORI', 'M15', 'M14']
+const LEGAL_SETS = ['RNA', 'GRN', 'DOM', 'RIX', 'XLN', 'HOU', 'AKH', 'AER', 'KLD', 'EMN', 'SOI', 'OGW', 'BFZ', 'DTK', 'FRF', 'KTK', 'JOU', 'BNG', 'THS', 'DGM', 'GTC', 'RTR', 'M19', 'ORI', 'M15', 'M14'];
 
-const DREADED_CARDS = ['ramunap ruins', 'rogue refiner', 'felidar guardian', 'smuggler\'s copter', 'attune with aether', 'aetherworks marvel', 'reflector mage', 'emrakul, the promised end', 'treasure cruise', 'dig through time', 'deathrite shaman', 'collected company']
+const DREADED_CARDS = ['ramunap ruins', 'rogue refiner', 'felidar guardian', 'smuggler\'s copter', 'attune with aether', 'aetherworks marvel', 'reflector mage', 'emrakul, the promised end', 'treasure cruise', 'dig through time', 'deathrite shaman', 'collected company'];
+
+const BASIC_LANDS = ['plains', 'forest', 'island', 'swamp', 'mountain', 'wastes'];
+const INFINITE_CARDS = ['persistent petitioners', 'rat colony', 'plains', 'forest', 'island', 'swamp', 'mountain', 'wastes'];
 
 function cleanCardName(name) {
   let exactName = name.toLowerCase().trim();
@@ -37,7 +40,116 @@ function getScryfallData(query) {
   });
 }
 
-const INFINITE_CARDS = ['persistent petitioners', 'rat colony', 'plains', 'forest', 'island', 'swamp', 'mountain', 'wastes'];
+
+
+function powerSet(array, maxLength) {
+  var result = [[]];
+
+  for (var i=0; i < array.length; i++) {
+    //this line is crucial! It prevents us from infinite loop
+    var len = result.length;
+    if (len > maxLength) len = maxLength;
+    for(var x=0; x < len; x++){
+      result.push(result[x].concat(array[i]))
+    }
+  }
+
+  return result;
+}
+
+
+
+function validSubset(cardList, setList) {
+  if (setList.length > 6) return false;
+
+  var valid = true;
+  cardList.forEach(card => {
+    var validCard = false;
+    card.sets.forEach(set => {
+      if (setList.includes(set)) {
+        validCard = true;
+      }
+    })
+    if (!validCard) {
+      valid = false;
+    }
+  });
+
+  return valid;
+}
+
+
+
+function checkSetPermutations(cardList, necessarySets, possibleSets) {
+  const extraSets = powerSet(possibleSets, 6 - necessarySets.length);
+  var ret = [];
+  extraSets.forEach(permutation => {
+    if (ret.length === 0 && validSubset(cardList, necessarySets.concat(permutation))) {
+      ret = necessarySets.concat(permutation);
+    }
+  });
+
+  return ret;
+}
+
+
+
+function checkSetCount(cardList) {
+  var necessarySets = [];
+  var possibleSets = [];
+  var resultSets = [];
+
+  // Find necessary sets
+  cardList.forEach(card => {
+    if (card.sets.length === 1 && !necessarySets.includes(card.sets[0])) {
+      necessarySets.push(card.sets[0]);
+    }
+  });
+
+  cardList.forEach(card => {
+    if (card.sets.length > 1 && !BASIC_LANDS.includes(card.name)) {
+      var inNecessarySet = false;
+      card.sets.forEach(set => {
+        if (necessarySets.includes(set)) {
+          inNecessarySet = true;
+        }
+      });
+
+      if (!inNecessarySet) {
+        card.sets.forEach(set => {
+          if (!possibleSets.includes(set)) {
+            possibleSets.push(set);
+          }
+        });
+      }
+    }
+  })
+
+  if (necessarySets.length > 6) {
+    var html = '';
+    necessarySets.forEach(set => {
+      html += set + ' ';
+    });
+    return [<div><p>Greater than 6 sets necessary: {html}</p></div>, false];
+  }
+
+  if (validSubset(cardList, necessarySets)) {
+    resultSets = necessarySets;
+  } else {
+    resultSets = checkSetPermutations(cardList, necessarySets, possibleSets);
+    if (resultSets.length === 0) {
+      return [<div><p>Too many sets required</p></div>, false];
+    }
+  }
+
+  var formatedHTML = '';
+  resultSets.forEach(set => {
+    formatedHTML += set + ' ';
+  });
+  return [<div><p>Using sets: {'{'}{formatedHTML.trim()}{'}'}</p></div>, true];
+}
+
+
 
 function checkDeckLegality(cardList) {
   var deckSize = 0;
@@ -147,8 +259,24 @@ function checkDeckLegality(cardList) {
     return ret;
   }
 
-  return (<p>DECK LEGAL</p>);
+  const setCheck = checkSetCount(cardList);
+  if (!setCheck[1]) {
+    return (
+      <div>
+        <p>DECK NOT LEGAL</p>
+        {setCheck[0]}
+      </div>
+    );
+  }
+  return (
+    <div>
+      <p>DECK LEGAL</p>
+      {setCheck[0]}
+    </div>
+  );
 }
+
+
 
 export class Jank extends Component {
   constructor(props) {
@@ -218,7 +346,8 @@ export class Jank extends Component {
       console.log('Final processed deck:');
       console.log(this.state.cards);
       this.setState({
-        legalResult: checkDeckLegality(this.state.cards)
+        legalResult: checkDeckLegality(this.state.cards),
+        setListHTML: checkSetCount(this.state.cards)
       });
     } else {
       console.log('Processed ' + this.state.processedSize.toString() + ' cards');
