@@ -130,7 +130,7 @@ function checkSetCount(cardList) {
     necessarySets.forEach(set => {
       html += set + ' ';
     });
-    return [<div><p>Greater than 6 sets necessary: {html}</p></div>, false];
+    return [<div><p>Greater than 6 sets necessary: {'{'}{html.trim()}{'}'}</p></div>, false];
   }
 
   if (validSubset(cardList, necessarySets)) {
@@ -138,7 +138,22 @@ function checkSetCount(cardList) {
   } else {
     resultSets = checkSetPermutations(cardList, necessarySets, possibleSets);
     if (resultSets.length === 0) {
-      return [<div><p>Too many sets required</p></div>, false];
+      var html1 = '';
+      necessarySets.forEach(set => {
+        html1 += set + ' ';
+      });
+      var html2 = '';
+      possibleSets.forEach(set => {
+        html2 += set + ' ';
+      });
+      return [
+        <div>
+          <p>too many sets needed</p>
+          <p>required sets: {'{'}{html1.trim()}{'}'}</p>
+          <p>possible sets from cards not in required sets: {'{'}{html2.trim()}{'}'}</p>
+        </div>,
+        false
+      ];
     }
   }
 
@@ -146,7 +161,7 @@ function checkSetCount(cardList) {
   resultSets.forEach(set => {
     formatedHTML += set + ' ';
   });
-  return [<div><p>Using sets: {'{'}{formatedHTML.trim()}{'}'}</p></div>, true];
+  return [<div><p>using sets: {'{'}{formatedHTML.trim()}{'}'}</p></div>, true];
 }
 
 
@@ -161,7 +176,7 @@ function checkDeckLegality(cardList) {
   console.log('Checking mainboard');
   cardList.forEach(card => {
     if (card.pointCost < 0) {
-      ret = (<p>NOT LEGAL: Card {card.name} not found.</p>);
+      ret = (<p>NOT LEGAL: card {card.name} not found.</p>);
     }
   
     mainBoardCards.push(card.name);
@@ -178,25 +193,25 @@ function checkDeckLegality(cardList) {
   var xOfCount = 0;
 
   if (deckSize < 40) {
-    return (<p>NOT LEGAL: Fewer than 40 cards</p>);
+    return (<p>NOT LEGAL: fewer than 40 cards</p>);
   } else if (deckSize >= 40 && deckSize < 50 ) {
     if (deckPoints > 22) {
-      return (<p>NOT LEGAL: Too many card points used ({deckPoints}) for a less than 50 card deck (max 22)</p>);
+      return (<p>NOT LEGAL: too many card points used ({deckPoints}) for a less than 50 card deck (max 22)</p>);
     }
     xOfCount = 1;
   } else if (deckSize >= 50 && deckSize < 60) {
     if (deckPoints > 25) {
-      return (<p>NOT LEGAL: Too many card points used ({deckPoints}) for a less than 60 card deck (max 25)</p>);
+      return (<p>NOT LEGAL: too many card points used ({deckPoints}) for a less than 60 card deck (max 25)</p>);
     }
     xOfCount = 2;
   } else if (deckSize >= 60 && deckSize < 70) {
     if (deckPoints > 28) {
-      return (<p>NOT LEGAL: Too many card points used ({deckPoints}) for a less than 70 card deck (max 28)</p>);
+      return (<p>NOT LEGAL: too many card points used ({deckPoints}) for a less than 70 card deck (max 28)</p>);
     }
     xOfCount = 3;
   } else if (deckSize >= 70) {
     if (deckPoints > 31) {
-      return (<p>NOT LEGAL: Too many card points used ({deckPoints}) for a 70 or greater card deck (max 31)</p>);
+      return (<p>NOT LEGAL: too many card points used ({deckPoints}) for a 70 or greater card deck (max 31)</p>);
     }
     xOfCount = 4;
   }
@@ -208,7 +223,7 @@ function checkDeckLegality(cardList) {
       return null;
     }
     if (!(INFINITE_CARDS.includes(card.name)) && card.count > xOfCount) {
-      ret = (<p>NOT LEGAL: Cannot have {card.count} {card.name}</p>);
+      ret = (<p>NOT LEGAL: cannot have {card.count} {card.name}</p>);
     }
   });
 
@@ -234,25 +249,25 @@ function checkDeckLegality(cardList) {
       });
 
       if (!(INFINITE_CARDS.includes(card.name)) && mainBoardCount + card.count > xOfCount) {
-        ret = (<p>NOT LEGAL: Cannot have {mainBoardCount + card.count} {card.name} (sideboard)</p>)
+        ret = (<p>NOT LEGAL: cannot have {mainBoardCount + card.count} {card.name} (sideboard)</p>)
       }
     } else {
       if (!(INFINITE_CARDS.includes(card.name)) && card.count > xOfCount) {
-        ret = (<p>NOT LEGAL: Cannot have {card.count} {card.name} (sideboard)</p>)
+        ret = (<p>NOT LEGAL: cannot have {card.count} {card.name} (sideboard)</p>)
       }
     }
   });
 
   if (deckSize < 40) {
-    return (<p>NOT LEGAL: Fewer than 40 cards</p>);
+    return (<p>NOT LEGAL: fewer than 40 cards</p>);
   } else if (deckSize >= 40 && deckSize < 50 && sideboardCount > 8) {
-    return (<p>NOT LEGAL: Too many sidebard cards ({sideboardCount}) for a less than 50 card deck (max 8)</p>);
+    return (<p>NOT LEGAL: too many sidebard cards ({sideboardCount}) for a less than 50 card deck (max 8)</p>);
   } else if (deckSize >= 50 && deckSize < 60 && sideboardCount > 10) {
-    return (<p>NOT LEGAL: Too many sidebard cards ({sideboardCount}) for a less than 60 card deck (max 10)</p>);
+    return (<p>NOT LEGAL: too many sidebard cards ({sideboardCount}) for a less than 60 card deck (max 10)</p>);
   } else if (deckSize >= 60 && deckSize < 70 && sideboardCount > 12) {
-    return (<p>NOT LEGAL: Too many sidebard cards ({sideboardCount}) for a less than 70 card deck (max 12)</p>);
+    return (<p>NOT LEGAL: too many sidebard cards ({sideboardCount}) for a less than 70 card deck (max 12)</p>);
   } else if (deckSize >= 70 && sideboardCount > 14) {
-    return (<p>NOT LEGAL: Too many sidebard cards ({sideboardCount}) for a greater than 70 card deck (max 14)</p>);
+    return (<p>NOT LEGAL: too many sidebard cards ({sideboardCount}) for a greater than 70 card deck (max 14)</p>);
   }
 
   if (ret) {
@@ -325,7 +340,7 @@ export class Jank extends Component {
 
     if (card.isSideboard) {
       if (this.state.sideboardHTML.length <= 0) {
-        oldSideboardHTML.push(<p>Sideboard</p>);
+        oldSideboardHTML.push(<p>sideboard</p>);
       }
       this.setState({
         sideboardHTML: oldSideboardHTML.concat(<MTGCard name={card.name} count={card.count} link={card.imageLink} />),
@@ -333,7 +348,7 @@ export class Jank extends Component {
       });
     } else {
       if (this.state.cardsHTML.length <= 0) {
-        oldCardsHTML.push(<div><p>Main Board</p></div>);
+        oldCardsHTML.push(<div><p>main board</p></div>);
       }
       this.setState({
         cardsHTML: oldCardsHTML.concat(<MTGCard name={card.name} count={card.count} link={card.imageLink} />),
@@ -509,17 +524,18 @@ export class Jank extends Component {
       <div className='Jank'>
         <Form className='JankCardFinder container'>
           <FormGroup>
-            <Label for='deckList'>Submit Decklist</Label>
+            <Label for='deckList'>submit main board</Label>
             <Input type='textarea' id='deckList' placeholder='Enter Deck List (<card count> <card name>)' />
-            <Label for='sideboard'>Submit Sideboard</Label>
+            <Label for='sideboard'>submit sideboard</Label>
             <Input type='textarea' id='sideboard' placeholder='Enter Sideboard (<card count> <card name>)' />
           </FormGroup>
           <Button onClick={this.processDeck}>Find!</Button>
           <br />
           <br />
+          {this.state.legalResult}
+          <br />
           {this.state.cardsHTML}
           {this.state.sideboardHTML}
-          {this.state.legalResult}
         </Form>
       </div>
     )
