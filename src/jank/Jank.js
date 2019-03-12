@@ -525,9 +525,9 @@ export class Jank extends Component {
         <Form className='JankCardFinder container'>
           <FormGroup>
             <Label for='deckList'>submit main board</Label>
-            <Input type='textarea' id='deckList' placeholder='Enter Deck List (<card count> <card name>)' />
+            <Input type='textarea' id='deckList' placeholder='<card count> <card name>' />
             <Label for='sideboard'>submit sideboard</Label>
-            <Input type='textarea' id='sideboard' placeholder='Enter Sideboard (<card count> <card name>)' />
+            <Input type='textarea' id='sideboard' placeholder='<card count> <card name>' />
           </FormGroup>
           <Button onClick={this.processDeck}>Find!</Button>
           <br />
