@@ -167,6 +167,8 @@ function checkSetCount(cardList) {
 
 
 function checkDeckLegality(cardList) {
+  const goodDeckImg = <img src={process.env.PUBLIC_URL + '/images/jankmtg/good_deck.png'} alt='good_deck' className='ResultImage' />;
+  const badDeckImg = <img src={process.env.PUBLIC_URL + '/images/jankmtg/bad_deck.png'} alt='bad_deck' className='ResultImage' />;
   var deckSize = 0;
   var deckPoints = 0;
   var maxPoints = 22;
@@ -194,29 +196,54 @@ function checkDeckLegality(cardList) {
   var xOfCount = 0;
 
   if (deckSize < 40) {
-    return (<p>NOT LEGAL: fewer than 40 cards</p>);
+    return (
+      <div>
+        <p>NOT LEGAL: fewer than 40 cards</p>
+        {badDeckImg}
+      </div>
+    );
   } else if (deckSize >= 40 && deckSize < 50 ) {
     maxPoints = 22;
     if (deckPoints > 22) {
-      return (<p>NOT LEGAL: too many card points used ({deckPoints}) for a less than 50 card deck (max 22)</p>);
+      return (
+        <div>
+          <p>NOT LEGAL: too many card points used ({deckPoints}) for a less than 50 card deck (max 22)</p>
+          {badDeckImg}
+        </div>
+      );
     }
     xOfCount = 1;
   } else if (deckSize >= 50 && deckSize < 60) {
     maxPoints = 25;
     if (deckPoints > 25) {
-      return (<p>NOT LEGAL: too many card points used ({deckPoints}) for a less than 60 card deck (max 25)</p>);
+      return (
+        <div>
+          <p>NOT LEGAL: too many card points used ({deckPoints}) for a less than 60 card deck (max 25)</p>
+          {badDeckImg}
+        </div>
+      );
     }
     xOfCount = 2;
   } else if (deckSize >= 60 && deckSize < 70) {
     maxPoints = 28;
     if (deckPoints > 28) {
-      return (<p>NOT LEGAL: too many card points used ({deckPoints}) for a less than 70 card deck (max 28)</p>);
+      return (
+        <div>
+          <p>NOT LEGAL: too many card points used ({deckPoints}) for a less than 70 card deck (max 28)</p>
+          {badDeckImg}
+        </div>
+      );
     }
     xOfCount = 3;
   } else if (deckSize >= 70) {
     maxPoints = 31;
     if (deckPoints > 31) {
-      return (<p>NOT LEGAL: too many card points used ({deckPoints}) for a 70 or greater card deck (max 31)</p>);
+      return (
+        <div>
+          <p>NOT LEGAL: too many card points used ({deckPoints}) for a 70 or greater card deck (max 31)</p>
+          {badDeckImg}
+        </div>
+      );
     }
     xOfCount = 4;
   }
@@ -228,7 +255,12 @@ function checkDeckLegality(cardList) {
       return null;
     }
     if (!(INFINITE_CARDS.includes(card.name)) && card.count > xOfCount) {
-      ret = (<p>NOT LEGAL: cannot have {card.count} {card.name}</p>);
+      ret = (
+        <div>
+          <p>NOT LEGAL: cannot have {card.count} {card.name}</p>
+          {badDeckImg}
+        </div>
+      );
     }
   });
 
@@ -254,7 +286,12 @@ function checkDeckLegality(cardList) {
       });
 
       if (!(INFINITE_CARDS.includes(card.name)) && mainBoardCount + card.count > xOfCount) {
-        ret = (<p>NOT LEGAL: cannot have {mainBoardCount + card.count} {card.name} (sideboard)</p>)
+        ret = (
+          <div>
+            <p>NOT LEGAL: cannot have {mainBoardCount + card.count} {card.name} (sideboard)</p>
+            {badDeckImg}
+          </div>
+        );
       }
     } else {
       if (!(INFINITE_CARDS.includes(card.name)) && card.count > xOfCount) {
@@ -291,8 +328,9 @@ function checkDeckLegality(cardList) {
   return (
     <div>
       <p>DECK LEGAL</p>
-      <p>using {deckPoints} of {maxPoints} points</p>
+      <p>using {deckPoints} of {maxPoints} points ({deckSize} card deck)</p>
       {setCheck[0]}
+      {goodDeckImg}
     </div>
   );
 }
