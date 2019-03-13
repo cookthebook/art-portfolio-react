@@ -169,6 +169,7 @@ function checkSetCount(cardList) {
 function checkDeckLegality(cardList) {
   var deckSize = 0;
   var deckPoints = 0;
+  var maxPoints = 22;
   var ret = null;
 
   var mainBoardCards = []
@@ -195,21 +196,25 @@ function checkDeckLegality(cardList) {
   if (deckSize < 40) {
     return (<p>NOT LEGAL: fewer than 40 cards</p>);
   } else if (deckSize >= 40 && deckSize < 50 ) {
+    maxPoints = 22;
     if (deckPoints > 22) {
       return (<p>NOT LEGAL: too many card points used ({deckPoints}) for a less than 50 card deck (max 22)</p>);
     }
     xOfCount = 1;
   } else if (deckSize >= 50 && deckSize < 60) {
+    maxPoints = 25;
     if (deckPoints > 25) {
       return (<p>NOT LEGAL: too many card points used ({deckPoints}) for a less than 60 card deck (max 25)</p>);
     }
     xOfCount = 2;
   } else if (deckSize >= 60 && deckSize < 70) {
+    maxPoints = 28;
     if (deckPoints > 28) {
       return (<p>NOT LEGAL: too many card points used ({deckPoints}) for a less than 70 card deck (max 28)</p>);
     }
     xOfCount = 3;
   } else if (deckSize >= 70) {
+    maxPoints = 31;
     if (deckPoints > 31) {
       return (<p>NOT LEGAL: too many card points used ({deckPoints}) for a 70 or greater card deck (max 31)</p>);
     }
@@ -286,6 +291,7 @@ function checkDeckLegality(cardList) {
   return (
     <div>
       <p>DECK LEGAL</p>
+      <p>using {deckPoints} of {maxPoints} points</p>
       {setCheck[0]}
     </div>
   );
@@ -343,7 +349,7 @@ export class Jank extends Component {
         oldSideboardHTML.push(<p>sideboard</p>);
       }
       this.setState({
-        sideboardHTML: oldSideboardHTML.concat(<MTGCard name={card.name} count={card.count} link={card.imageLink} />),
+        sideboardHTML: oldSideboardHTML.concat(<MTGCard name={card.name} count={card.count} link={card.imageLink} cost={card.pointCost} />),
         processedSize: oldProcessedSize + card.count
       });
     } else {
@@ -351,7 +357,7 @@ export class Jank extends Component {
         oldCardsHTML.push(<div><p>main board</p></div>);
       }
       this.setState({
-        cardsHTML: oldCardsHTML.concat(<MTGCard name={card.name} count={card.count} link={card.imageLink} />),
+        cardsHTML: oldCardsHTML.concat(<MTGCard name={card.name} count={card.count} link={card.imageLink} cost={card.pointCost} />),
         processedSize: oldProcessedSize + card.count
       })
     }
@@ -548,13 +554,14 @@ class MTGCard extends Component {
     this.name = props.name;
     this.count = props.count;
     this.link = props.link;
+    this.cost = props.cost;
   }
 
   render() {
     return (<div>
       {this.link.includes(',') ?
-        <p>{this.count} x <a href={this.link.split(',')[0]}>{this.name.split('//')[0]}</a> {'//'} <a href={this.link.split(',')[1]}>{this.name.split('//')[1]}</a></p>:
-        <p>{this.count} x <a href={this.link}>{this.name}</a></p>
+        <p>{this.count} x <a href={this.link.split(',')[0]}>{this.name.split('//')[0]}</a> {'//'} <a href={this.link.split(',')[1]}>{this.name.split('//')[1]}</a> ({this.cost}pts)</p>:
+        <p>{this.count} x <a href={this.link}>{this.name}</a> ({this.cost}pts)</p>
       }
     </div>);
   }
