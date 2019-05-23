@@ -563,6 +563,21 @@ export class Jank extends Component {
     });
   }
 
+  processFile() {
+    if (window.File && window.FileReader && window.FileList && window.Blob) {
+      let deckFile = document.getElementById('deck-file').files[0];
+      var reader = new FileReader();
+      reader.onload = (function(theFile) {
+        return function(e) {
+          console.log(e.target.result);
+        }
+      })(deckFile);
+      reader.readAsText(deckFile, 'UTF-8');
+    } else {
+      alert('File APIs not supported');
+    }
+  }
+
   render() {
     return (
       <div className='Jank'>
@@ -574,6 +589,15 @@ export class Jank extends Component {
             <Input type='textarea' id='sideboard' placeholder='<card count> <card name>' />
           </FormGroup>
           <Button onClick={this.processDeck}>Find!</Button>
+          <br />
+          <br />
+          <FormGroup>
+            <Label for='deck-file'>or upload a deck file</Label>
+            <input id="deck-file" type="file" />
+            <br />
+            <br />
+            <Button onClick={this.processFile}>Upload Deck</Button>
+          </FormGroup>
           <br />
           <br />
           {this.state.legalResult}
