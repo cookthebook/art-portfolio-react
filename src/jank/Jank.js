@@ -3,11 +3,11 @@ import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
 
 import './Jank.scss'
 
-const LEGAL_SETS = ['RNA', 'GRN', 'DOM', 'RIX', 'XLN', 'HOU', 'AKH', 'AER', 'KLD', 'EMN', 'SOI', 'OGW', 'BFZ', 'DTK', 'FRF', 'KTK', 'JOU', 'BNG', 'THS', 'DGM', 'GTC', 'RTR', 'M19', 'ORI', 'M15', 'M14'];
+const LEGAL_SETS = ['WAR', 'RNA', 'GRN', 'DOM', 'RIX', 'XLN', 'HOU', 'AKH', 'AER', 'KLD', 'EMN', 'SOI', 'OGW', 'BFZ', 'DTK', 'FRF', 'KTK', 'JOU', 'BNG', 'THS', 'DGM', 'GTC', 'RTR', 'M19', 'ORI', 'M15', 'M14'];
 
 const DREADED_CARDS = ['ramunap ruins', 'rogue refiner', 'felidar guardian', 'smuggler\'s copter', 'attune with aether', 'aetherworks marvel', 'reflector mage', 'emrakul, the promised end', 'treasure cruise', 'dig through time', 'deathrite shaman', 'collected company'];
 
-const BASIC_LANDS = ['plains', 'forest', 'island', 'swamp', 'mountain', 'wastes'];
+const BASIC_LANDS = ['plains', 'snow-covered plains', 'forest', 'snow-covered forest', 'island', 'snow-covered island', 'swamp', 'snow-covered swamp', 'mountain', 'snow-covered mountain', 'wastes'];
 const INFINITE_CARDS = ['persistent petitioners', 'rat colony', 'plains', 'forest', 'island', 'swamp', 'mountain', 'wastes'];
 
 function cleanCardName(name) {
