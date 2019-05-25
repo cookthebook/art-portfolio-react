@@ -7,8 +7,8 @@ const LEGAL_SETS = ['WAR', 'RNA', 'GRN', 'DOM', 'RIX', 'XLN', 'HOU', 'AKH', 'AER
 
 const DREADED_CARDS = ['ramunap ruins', 'rogue refiner', 'felidar guardian', 'smuggler\'s copter', 'attune with aether', 'aetherworks marvel', 'reflector mage', 'emrakul, the promised end', 'treasure cruise', 'dig through time', 'deathrite shaman', 'collected company'];
 
-const BASIC_LANDS = ['plains', 'snow-covered plains', 'forest', 'snow-covered forest', 'island', 'snow-covered island', 'swamp', 'snow-covered swamp', 'mountain', 'snow-covered mountain', 'wastes'];
-const INFINITE_CARDS = ['persistent petitioners', 'rat colony', 'plains', 'forest', 'island', 'swamp', 'mountain', 'wastes'];
+const BASIC_LANDS = ['plains', 'forest', 'island', 'swamp', 'mountain'];
+const INFINITE_CARDS = ['persistent petitioners', 'rat colony', 'plains', 'snow-covered plains', 'forest', 'snow-covered forest', 'island', 'snow-covered island', 'swamp', 'snow-covered swamp', 'mountain', 'snow-covered mountain', 'wastes'];
 
 function cleanCardName(name) {
   let exactName = name.toLowerCase().trim();
@@ -59,8 +59,10 @@ function powerSet(array, maxLength) {
 
 
 
-function validSubset(cardList, setList) {
+function validSubset(deck, setList) {
   if (setList.length > 6) return false;
+
+  let cardList = deck.mainboard.concat(deck.sideboard);
 
   var valid = true;
   cardList.forEach(card => {
@@ -80,11 +82,11 @@ function validSubset(cardList, setList) {
 
 
 
-function checkSetPermutations(cardList, necessarySets, possibleSets) {
+function checkSetPermutations(deck, necessarySets, possibleSets) {
   const extraSets = powerSet(possibleSets, 6 - necessarySets.length);
   var ret = [];
   extraSets.forEach(permutation => {
-    if (ret.length === 0 && validSubset(cardList, necessarySets.concat(permutation))) {
+    if (ret.length === 0 && validSubset(deck, necessarySets.concat(permutation))) {
       ret = necessarySets.concat(permutation);
     }
   });
@@ -94,7 +96,8 @@ function checkSetPermutations(cardList, necessarySets, possibleSets) {
 
 
 
-function checkSetCount(cardList) {
+function checkSetCount(deck) {
+  const cardList = deck.mainboard.concat(deck.sideboard)
   var necessarySets = [];
   var possibleSets = [];
   var resultSets = [];
@@ -131,12 +134,14 @@ function checkSetCount(cardList) {
       html += set + ' ';
     });
     return [<div><p>Greater than 6 sets necessary: {'{'}{html.trim()}{'}'}</p></div>, false];
+  } else if (necessarySets.length === 0) {
+    necessarySets.push(LEGAL_SETS[0]);
   }
 
-  if (validSubset(cardList, necessarySets)) {
+  if (validSubset(deck, necessarySets)) {
     resultSets = necessarySets;
   } else {
-    resultSets = checkSetPermutations(cardList, necessarySets, possibleSets);
+    resultSets = checkSetPermutations(deck, necessarySets, possibleSets);
     if (resultSets.length === 0) {
       var html1 = '';
       necessarySets.forEach(set => {
@@ -166,27 +171,22 @@ function checkSetCount(cardList) {
 
 
 
-function checkDeckLegality(cardList) {
+function checkDeckLegality(deck) {
   const goodDeckImg = <img src={process.env.PUBLIC_URL + '/images/jankmtg/good_deck.png'} alt='good_deck' className='ResultImage' />;
   const badDeckImg = <img src={process.env.PUBLIC_URL + '/images/jankmtg/bad_deck.png'} alt='bad_deck' className='ResultImage' />;
-  var deckSize = 0;
+  var deckSize = deck.getSize();
   var deckPoints = 0;
   var maxPoints = 22;
   var ret = null;
 
-  var mainBoardCards = []
   // Basic decksize check and point check
   console.log('Checking mainboard');
-  cardList.forEach(card => {
-    if (card.pointCost < 0) {
+  deck.mainboard.forEach(card => {
+    if (card.cost < 0) {
       ret = (<p>NOT LEGAL: card {card.name} not found.</p>);
     }
 
-    mainBoardCards.push(card.name);
-    if (!(card.isSideboard)) {
-      deckSize = deckSize + card.count;
-    }
-    deckPoints = deckPoints + (card.count * card.pointCost);
+    deckPoints = deckPoints + (card.count * card.cost);
   });
 
   if (ret) {
@@ -250,10 +250,7 @@ function checkDeckLegality(cardList) {
 
   console.log('Can have ' + xOfCount.toString() + '-of\'s');
 
-  cardList.forEach(card => {
-    if (card.isSideboard) {
-      return null;
-    }
+  deck.mainboard.forEach(card => {
     if (!(INFINITE_CARDS.includes(card.name)) && card.count > xOfCount) {
       ret = (
         <div>
@@ -270,35 +267,27 @@ function checkDeckLegality(cardList) {
 
   // Check sideboard
   console.log('Checking sideboard');
-  var sideboardCount = 0;
-  cardList.forEach(card => {
-    if (!card.isSideboard) {
-      return null;
-    }
-    sideboardCount = sideboardCount + card.count;
-
-    if (mainBoardCards.includes(card.name)) {
-      var mainBoardCount = 0;
-      cardList.forEach(mainBoardCard => {
-        if (mainBoardCard.name === card.name && !(mainBoardCard.isSideboard)) {
-          mainBoardCount = mainBoardCard.count;
-        }
-      });
-
-      if (!(INFINITE_CARDS.includes(card.name)) && mainBoardCount + card.count > xOfCount) {
+  var sideboardCount = deck.getSideboardSize();
+  deck.sideboard.forEach(card => {
+    deck.mainboard.forEach(mainCard => {
+      if (!(INFINITE_CARDS.includes(card.name)) && mainCard.name === card.name && mainCard.count + card.count > xOfCount) {
         ret = (
           <div>
-            <p>NOT LEGAL: cannot have {mainBoardCount + card.count} {card.name} (sideboard)</p>
+            <p>NOT LEGAL: cannot have {mainCard.count + card.count} {card.name} (sideboard)</p>
             {badDeckImg}
           </div>
         );
       }
-    } else {
-      if (!(INFINITE_CARDS.includes(card.name)) && card.count > xOfCount) {
-        ret = (<p>NOT LEGAL: cannot have {card.count} {card.name} (sideboard)</p>)
-      }
+    });
+
+    if (!(INFINITE_CARDS.includes(card.name)) && card.count > xOfCount) {
+      ret = (<p>NOT LEGAL: cannot have {card.count} {card.name} (sideboard)</p>)
     }
   });
+
+  if (ret) {
+    return ret;
+  }
 
   if (deckSize < 40) {
     return (<p>NOT LEGAL: fewer than 40 cards</p>);
@@ -316,12 +305,13 @@ function checkDeckLegality(cardList) {
     return ret;
   }
 
-  const setCheck = checkSetCount(cardList);
+  const setCheck = checkSetCount(deck);
   if (!setCheck[1]) {
     return (
       <div>
         <p>DECK NOT LEGAL</p>
         {setCheck[0]}
+        {badDeckImg}
       </div>
     );
   }
@@ -341,9 +331,12 @@ class MTGCard {
     this.name = cleanCardName(exactName);
     this.sideboard = sideboard;
     this.count = count;
-    this.set = null;
+    this.sets = [];
     this.cost = null;
     this.imageLink = '';
+
+    this.getInfo = this.getInfo.bind(this);
+    this.toJSX = this.toJSX.bind(this);
   }
 
   getInfo(callback) {
@@ -355,6 +348,8 @@ class MTGCard {
       query += 'set%3A' + set + '+OR+'
     });
     query += ')';
+
+    console.log('Searching for ' + this.name);
     console.log(query);
 
     let cardJSON = null;
@@ -363,7 +358,8 @@ class MTGCard {
       cardJSON = JSON.parse(value);
       if (cardJSON === undefined || cardJSON['data'] === undefined) {
         console.log('No data found for card: ' + this.name);
-        return null;
+        callback(this);
+        return;
       }
 
       if (DREADED_CARDS.includes(this.name)) {
@@ -373,7 +369,7 @@ class MTGCard {
       cardJSON.data.forEach(cardObject => {
         cardObject.name = cleanCardName(cardObject.name);
         if (cardObject.name === this.name) {
-          this.set = cardObject.set.toUpperCase();
+          this.sets.push(cardObject.set.toUpperCase());
 
           // Use newest printing rarity
           if (this.cost === null) {
@@ -408,11 +404,9 @@ class MTGCard {
       console.log('Finished processing card: ' + this.name);
       callback(this);
     }).catch(err => {
-      console.log('NETWORK ERROR');
+      console.log('ERROR PROCESSING CARD');
       console.log(err);
-      return null;
     });
-    return true;
   }
 
   toJSX() {
@@ -426,10 +420,18 @@ class MTGCard {
 }
 
 class MTGDeck {
-  constructor(updateCallback) {
+  constructor() {
     this.mainboard = [];
     this.sideboard = [];
-    this.updateCallback = updateCallback;
+    this.updateCallback = null;
+    this.processedCount = 0;
+
+    this.addCard = this.addCard.bind(this);
+    this.getSize = this.getSize.bind(this);
+    this.getSideboardSize = this.getSideboardSize.bind(this);
+    this.onUpdate = this.onUpdate.bind(this);
+    this.getInfo = this.getInfo.bind(this);
+    this.toJSX = this.toJSX.bind(this);
   }
 
   addCard(exactName, count, sideboard = false) {
@@ -455,6 +457,28 @@ class MTGDeck {
       size += card.count;
     });
     return size;
+  }
+
+  onUpdate(card) {
+    this.processedCount = this.processedCount + card.count;
+    console.log('Processed ' + this.processedCount + ' cards');
+    this.updateCallback(
+      this,
+      this.processedCount === (this.getSize() + this.getSideboardSize())
+    );
+  }
+
+  getInfo(callback) {
+    // Reprocess deck
+    this.processedCount = 0;
+    this.updateCallback = callback;
+    console.log('Getting card info for deck');
+    this.mainboard.forEach(card => {
+      card.getInfo(this.onUpdate);
+    });
+    this.sideboard.forEach(card => {
+      card.getInfo(this.onUpdate);
+    });
   }
 
   toJSX() {
@@ -486,47 +510,66 @@ export class Jank extends Component {
       legalResult: (<div></div>)
     };
 
+    this.updateLegalityHTML = this.updateLegalityHTML.bind(this);
+    this.updateDeckHTML = this.updateDeckHTML.bind(this);
     this.processDeck = this.processDeck.bind(this);
+  }
+
+  updateLegalityHTML(deck) {
+    this.setState({
+      legalResult: checkDeckLegality(deck)
+    });
+  }
+
+  updateDeckHTML(deck, checkLegality=false) {
+    console.log('Updating deck to:');
+    console.log(deck);
+    this.setState({
+      deck: deck,
+      deckHTML: deck.toJSX()
+    });
+    if (checkLegality) {
+      this.updateLegalityHTML(deck);
+    }
   }
 
   processDeck() {
     // Reset deck information on process
     this.setState({
       deck: null,
-      deckHTML: [],
+      deckHTML: (<div></div>),
       legalResult: (<div></div>)
     });
 
-    // Make only one update to the state at end
-    let tempDeck = new MTGDeck([], []);
+    let unprocessedDeck = new MTGDeck();
 
     let deckText = document.getElementById('deckList').value;
     let sideboardText = document.getElementById('sideboard').value;
     console.log('Deck list:');
     console.log(deckText);
+    console.log(sideboardText);
 
     deckText.split('\n').forEach(cardText => {
       let count = parseInt(cardText.split(' ')[0]);
       let card = cardText.split(' ').slice(1).join(' ');
-      if (count && card) tempDeck.addCard(card, count);
+      if (count && card) unprocessedDeck.addCard(card, count);
     });
 
     sideboardText.split('\n').forEach(cardText => {
-      let count = parseInt(cardText.split(' ')[0])
-      let card = cardText.split(' ').slice(1).join(' ')
-      if (count && card) tempDeck.addCard(card, count);
+      let count = parseInt(cardText.split(' ')[0]);
+      let card = cardText.split(' ').slice(1).join(' ');
+      if (count && card) unprocessedDeck.addCard(card, count, true);
     });
 
-    console.log('Found deck of size: ' + (tempDeck.getSize() + tempDeck.getSideboardSize()));
-    this.setState({
-      deck: tempDeck,
-      deckHTML: tempDeck.toJSX()
-    });
+    console.log('Found deck of size: ' + (unprocessedDeck.getSize() + unprocessedDeck.getSideboardSize()));
+    console.log(unprocessedDeck);
+    unprocessedDeck.getInfo(this.updateDeckHTML);
   }
 
   render() {
     return (
       <div className='Jank'>
+        <h1 style={{padding:'1em'}}>JANK DECK CHECKER</h1>
         <Form className='JankCardFinder container'>
           <FormGroup>
             <Label for='deckList'>submit main board</Label>
