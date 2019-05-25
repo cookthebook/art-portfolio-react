@@ -181,7 +181,7 @@ function checkDeckLegality(cardList) {
     if (card.pointCost < 0) {
       ret = (<p>NOT LEGAL: card {card.name} not found.</p>);
     }
-  
+
     mainBoardCards.push(card.name);
     if (!(card.isSideboard)){
       deckSize = deckSize + card.count;
@@ -361,7 +361,7 @@ export class Jank extends Component {
     var oldCardsHTML = this.state.cardsHTML;
     var oldSideboardHTML = this.state.sideboardHTML;
     const oldProcessedSize = this.state.processedSize;
-  
+
     var isInDeck = false;
 
     oldCards.forEach(currCard => {
@@ -563,21 +563,6 @@ export class Jank extends Component {
     });
   }
 
-  processFile() {
-    if (window.File && window.FileReader && window.FileList && window.Blob) {
-      let deckFile = document.getElementById('deck-file').files[0];
-      var reader = new FileReader();
-      reader.onload = (function(theFile) {
-        return function(e) {
-          console.log(e.target.result);
-        }
-      })(deckFile);
-      reader.readAsText(deckFile, 'UTF-8');
-    } else {
-      alert('File APIs not supported');
-    }
-  }
-
   render() {
     return (
       <div className='Jank'>
@@ -589,15 +574,6 @@ export class Jank extends Component {
             <Input type='textarea' id='sideboard' placeholder='<card count> <card name>' />
           </FormGroup>
           <Button onClick={this.processDeck}>Find!</Button>
-          <br />
-          <br />
-          <FormGroup>
-            <Label for='deck-file'>or upload a deck file</Label>
-            <input id="deck-file" type="file" />
-            <br />
-            <br />
-            <Button onClick={this.processFile}>Upload Deck</Button>
-          </FormGroup>
           <br />
           <br />
           {this.state.legalResult}
@@ -625,6 +601,7 @@ class MTGCard extends Component {
         <p>{this.count} x <a href={this.link.split(',')[0]}>{this.name.split('//')[0]}</a> {'//'} <a href={this.link.split(',')[1]}>{this.name.split('//')[1]}</a> ({this.cost}pts)</p>:
         <p>{this.count} x <a href={this.link}>{this.name}</a> ({this.cost}pts)</p>
       }
+      <span class='mtgcard'>{this.name}</span>
     </div>);
   }
 }
