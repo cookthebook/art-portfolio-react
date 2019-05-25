@@ -15,11 +15,14 @@ function cleanCardName(name) {
   return exactName;
 }
 
-function getScryfallData(query) {
+function getWebData(query) {
   return new Promise(function (resolve, reject) {
     // Do the usual XHR stuff
     var req = new XMLHttpRequest();
-    req.open('GET', query);
+    req.open('GET', query, true);
+    req.withCredentials = true;
+    // req.setRequestHeader('Access-Control-Allow-Origin', 'https://tappedout.net');
+    // req.setRequestHeader('Access-Control-Allow-Origin', 'https://api.scryfall.com');
 
     req.onload = function () {
       if (req.status === 200) {
@@ -36,7 +39,7 @@ function getScryfallData(query) {
     };
 
     // Make the request
-    req.send();
+    req.send(null);
   });
 }
 
@@ -326,6 +329,7 @@ function checkDeckLegality(deck) {
 }
 
 
+
 class MTGCard {
   constructor(exactName, count, sideboard = false) {
     this.name = cleanCardName(exactName);
@@ -354,7 +358,7 @@ class MTGCard {
 
     let cardJSON = null;
 
-    getScryfallData(query).then(value => {
+    getWebData(query).then(value => {
       cardJSON = JSON.parse(value);
       if (cardJSON === undefined || cardJSON['data'] === undefined) {
         console.log('No data found for card: ' + this.name);
@@ -513,6 +517,7 @@ export class Jank extends Component {
     this.updateLegalityHTML = this.updateLegalityHTML.bind(this);
     this.updateDeckHTML = this.updateDeckHTML.bind(this);
     this.processDeck = this.processDeck.bind(this);
+    this.processLink = this.processLink.bind(this);
   }
 
   updateLegalityHTML(deck) {
@@ -566,13 +571,29 @@ export class Jank extends Component {
     unprocessedDeck.getInfo(this.updateDeckHTML);
   }
 
+  processLink() {
+    const query = document.getElementById('deckLink').value;
+    console.log(query);
+    getWebData(query).then(value => {
+      console.log(value);
+    }).catch(err => {
+      console.log('ERROR PROCESSING LINK');
+      console.log(err);
+    });
+  }
+
   render() {
     return (
       <div className='Jank'>
         <h1 style={{padding:'1em'}}>JANK DECK CHECKER</h1>
         <Form className='JankCardFinder container'>
           <FormGroup>
-            <Label for='deckList'>submit main board</Label>
+            <Label for='deckLink'>mtg goldfish or tapped out link</Label>
+            <Input type='url' id='deckLink' placeholder='deck link' />
+          </FormGroup>
+          <Button onClick={this.processLink}>Import!</Button>
+          <FormGroup>
+            <Label for='deckList'>or<br />submit main board</Label>
             <Input type='textarea' id='deckList' placeholder='<card count> <card name>' />
             <Label for='sideboard'>submit sideboard</Label>
             <Input type='textarea' id='sideboard' placeholder='<card count> <card name>' />
