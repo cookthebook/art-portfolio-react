@@ -45,11 +45,11 @@ function getScryfallData(query) {
 function powerSet(array, maxLength) {
   var result = [[]];
 
-  for (var i=0; i < array.length; i++) {
+  for (var i = 0; i < array.length; i++) {
     //this line is crucial! It prevents us from infinite loop
     var len = result.length;
     if (len > maxLength) len = maxLength;
-    for(var x=0; x < len; x++){
+    for (var x = 0; x < len; x++) {
       result.push(result[x].concat(array[i]))
     }
   }
@@ -183,7 +183,7 @@ function checkDeckLegality(cardList) {
     }
 
     mainBoardCards.push(card.name);
-    if (!(card.isSideboard)){
+    if (!(card.isSideboard)) {
       deckSize = deckSize + card.count;
     }
     deckPoints = deckPoints + (card.count * card.pointCost);
@@ -202,7 +202,7 @@ function checkDeckLegality(cardList) {
         {badDeckImg}
       </div>
     );
-  } else if (deckSize >= 40 && deckSize < 50 ) {
+  } else if (deckSize >= 40 && deckSize < 50) {
     maxPoints = 22;
     if (deckPoints > 22) {
       return (
@@ -336,87 +336,20 @@ function checkDeckLegality(cardList) {
 }
 
 
-
-export class Jank extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      cards: [],
-      cardsHTML: [],
-      sideboardHTML: [],
-      deckSize: -1,
-      processedSize: 0,
-      legalResult: (<div></div>)
-    };
-
-    this.processDeck = this.processDeck.bind(this);
-    this.getCardInfo = this.getCardInfo.bind(this);
-    this.updateResultList = this.updateResultList.bind(this);
+class MTGCard {
+  constructor(exactName, count, sideboard = false) {
+    this.name = cleanCardName(exactName);
+    this.sideboard = sideboard;
+    this.count = count;
+    this.set = null;
+    this.cost = null;
+    this.imageLink = '';
   }
 
-  updateResultList(card) {
-    console.log('Adding card: ' + card.name);
-    var oldCards = this.state.cards;
-    var oldCardsHTML = this.state.cardsHTML;
-    var oldSideboardHTML = this.state.sideboardHTML;
-    const oldProcessedSize = this.state.processedSize;
-
-    var isInDeck = false;
-
-    oldCards.forEach(currCard => {
-      if (currCard.name === card.name && (currCard.isSideboard === card.isSideboard)) {
-        isInDeck = true;
-        currCard.count = currCard.count + card.count;
-      }
-    });
-
-    if (isInDeck) {
-      console.log('Card ' + card.name + ' already in deck, adding to count');
-      this.setState({
-        cards: oldCards
-      })
-    } else {
-      this.setState({
-        cards: oldCards.concat(card)
-      });
-    }
-
-    if (card.isSideboard) {
-      if (this.state.sideboardHTML.length <= 0) {
-        oldSideboardHTML.push(<p>sideboard</p>);
-      }
-      this.setState({
-        sideboardHTML: oldSideboardHTML.concat(<MTGCard name={card.name} count={card.count} link={card.imageLink} cost={card.pointCost} />),
-        processedSize: oldProcessedSize + card.count
-      });
-    } else {
-      if (this.state.cardsHTML.length <= 0) {
-        oldCardsHTML.push(<div><p>main board</p></div>);
-      }
-      this.setState({
-        cardsHTML: oldCardsHTML.concat(<MTGCard name={card.name} count={card.count} link={card.imageLink} cost={card.pointCost} />),
-        processedSize: oldProcessedSize + card.count
-      })
-    }
-
-    console.log('Checking if done with processing');
-    if (this.state.processedSize === this.state.deckSize) {
-      console.log('Final processed deck:');
-      console.log(this.state.cards);
-      this.setState({
-        legalResult: checkDeckLegality(this.state.cards),
-        setListHTML: checkSetCount(this.state.cards)
-      });
-    } else {
-      console.log('Processed ' + this.state.processedSize.toString() + ' cards');
-    }
-  }
-
-  getCardInfo(exactName, count, isSideboard) {
+  getInfo(callback) {
     // Form Scryfall API query
     let query = 'https://api.scryfall.com/cards/search?order=released&unique=prints&q=';
-    query += '!"' + exactName + '"';
+    query += '!"' + this.name + '"';
     query += '+(';
     LEGAL_SETS.forEach(set => {
       query += 'set%3A' + set + '+OR+'
@@ -429,137 +362,165 @@ export class Jank extends Component {
     getScryfallData(query).then(value => {
       cardJSON = JSON.parse(value);
       if (cardJSON === undefined || cardJSON['data'] === undefined) {
-        console.log('No data found for card: ' + exactName);
-        this.updateResultList({
-          name: exactName,
-          sets: [],
-          count: count,
-          pointCost: -1,
-          isSideboard: isSideboard,
-          imageLink: ''
-        });
+        console.log('No data found for card: ' + this.name);
         return null;
       }
 
-      exactName = cleanCardName(exactName);
-      var newCard = {
-        name: exactName,
-        sets: [],
-        count: count,
-        pointCost: -1,
-        isSideboard: isSideboard,
-        imageLink: ''
-      };
-
-      if (DREADED_CARDS.includes(exactName)) {
-        newCard.pointCost = 4;
+      if (DREADED_CARDS.includes(this.name)) {
+        this.cost = 4;
       }
 
       cardJSON.data.forEach(cardObject => {
         cardObject.name = cleanCardName(cardObject.name);
-        if (cardObject.name === newCard.name) {
-          newCard.sets.push(cardObject.set.toUpperCase());
+        if (cardObject.name === this.name) {
+          this.set = cardObject.set.toUpperCase();
 
           // Use newest printing rarity
-          if (newCard.pointCost === -1) {
+          if (this.cost === null) {
             switch (cardObject.rarity) {
               case 'mythic':
-                newCard.pointCost = 3;
+                this.cost = 3;
                 break;
               case 'rare':
-                newCard.pointCost = 2;
+                this.cost = 2;
                 break;
               case 'uncommon':
-                newCard.pointCost = 1;
+                this.cost = 1;
                 break;
               case 'common':
-                newCard.pointCost = 0;
+                this.cost = 0;
                 break;
               default:
                 break;
             }
           }
 
-          if (newCard.imageLink === '') {
+          if (this.imageLink === '') {
             if (cardObject.image_uris) {
-              newCard.imageLink = cardObject.image_uris.large;
+              this.imageLink = cardObject.image_uris.large;
             } else {
               // Double sided card
-              newCard.imageLink = cardObject.card_faces[0].image_uris.large + ',' + cardObject.card_faces[1].image_uris.large
+              this.imageLink = cardObject.card_faces[0].image_uris.large + ',' + cardObject.card_faces[1].image_uris.large
             }
           }
         }
       });
-      console.log('Finished processing card: ' + newCard.name);
-      this.updateResultList(newCard);
+      console.log('Finished processing card: ' + this.name);
+      callback(this);
     }).catch(err => {
       console.log('NETWORK ERROR');
       console.log(err);
-      this.updateResultList({
-        name: exactName,
-        sets: [],
-        count: count,
-        pointCost: -1,
-        isSideboard: isSideboard,
-        imageLink: ''
-      });
       return null;
     });
+    return true;
+  }
+
+  toJSX() {
+    return (<div>
+      {this.imageLink.includes(',') ?
+        <p>{this.count} x <a href={this.imageLink.split(',')[0]}>{this.name.split('//')[0]}</a> {'//'} <a href={this.imageLink.split(',')[1]}>{this.name.split('//')[1]}</a> ({this.cost}pts)</p> :
+        <p>{this.count} x <a href={this.imageLink}>{this.name}</a> ({this.cost}pts)</p>
+      }
+    </div>);
+  }
+}
+
+class MTGDeck {
+  constructor(updateCallback) {
+    this.mainboard = [];
+    this.sideboard = [];
+    this.updateCallback = updateCallback;
+  }
+
+  addCard(exactName, count, sideboard = false) {
+    let tempCard = new MTGCard(exactName, count, sideboard);
+    if (sideboard) {
+      this.sideboard.push(tempCard);
+    } else {
+      this.mainboard.push(tempCard);
+    }
+  }
+
+  getSize() {
+    let size = 0;
+    this.mainboard.forEach(card => {
+      size += card.count;
+    });
+    return size;
+  }
+
+  getSideboardSize() {
+    let size = 0;
+    this.sideboard.forEach(card => {
+      size += card.count;
+    });
+    return size;
+  }
+
+  toJSX() {
+    let mainJSX = [];
+    let sideJSX = [];
+
+    this.mainboard.forEach(card => {
+      mainJSX.push(card.toJSX());
+    });
+    this.sideboard.forEach(card => {
+      sideJSX.push(card.toJSX());
+    });
+
+    return (<div>
+      <p>mainboard</p>
+      {mainJSX}
+      <p>sideboard</p>
+      {sideJSX}
+    </div>);
+  }
+}
+
+export class Jank extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      deck: null,
+      deckHTML: (<div></div>),
+      legalResult: (<div></div>)
+    };
+
+    this.processDeck = this.processDeck.bind(this);
   }
 
   processDeck() {
-    if (this.state.cards.length > 0) {
-      this.setState({
-        cards: [],
-        cardsHTML: [],
-        sideboardHTML: [],
-        legalResult: (<div></div>),
-        deckSize: 0,
-        processedSize: 0
-      });
-    }
+    // Reset deck information on process
+    this.setState({
+      deck: null,
+      deckHTML: [],
+      legalResult: (<div></div>)
+    });
+
+    // Make only one update to the state at end
+    let tempDeck = new MTGDeck([], []);
+
     let deckText = document.getElementById('deckList').value;
     let sideboardText = document.getElementById('sideboard').value;
-    console.log('Deck list:')
-    console.log(deckText)
-    var totalDeckSize = 0;
+    console.log('Deck list:');
+    console.log(deckText);
 
     deckText.split('\n').forEach(cardText => {
-      let count = parseInt(cardText.split(' ')[0])
-      let card = cardText.split(' ').slice(1).join(' ')
-
-      if (count && card) {
-        totalDeckSize = totalDeckSize + count;
-      }
+      let count = parseInt(cardText.split(' ')[0]);
+      let card = cardText.split(' ').slice(1).join(' ');
+      if (count && card) tempDeck.addCard(card, count);
     });
+
     sideboardText.split('\n').forEach(cardText => {
       let count = parseInt(cardText.split(' ')[0])
       let card = cardText.split(' ').slice(1).join(' ')
-
-      if (count && card) {
-        totalDeckSize = totalDeckSize + count;
-      }
+      if (count && card) tempDeck.addCard(card, count);
     });
-    console.log('Found deck of size: ' + totalDeckSize.toString());
+
+    console.log('Found deck of size: ' + (tempDeck.getSize() + tempDeck.getSideboardSize()));
     this.setState({
-      deckSize: totalDeckSize
-    });
-
-    deckText.split('\n').forEach(cardText => {
-      let count = parseInt(cardText.split(' ')[0])
-      let card = cardText.split(' ').slice(1).join(' ')
-
-      if (count && card) {
-        this.getCardInfo(card, count, false);
-      }
-    });
-    sideboardText.split('\n').forEach(cardText => {
-      let count = parseInt(cardText.split(' ')[0])
-      let card = cardText.split(' ').slice(1).join(' ')
-
-      if (count && card) {
-        this.getCardInfo(card, count, true);
-      }
+      deck: tempDeck,
+      deckHTML: tempDeck.toJSX()
     });
   }
 
@@ -578,30 +539,9 @@ export class Jank extends Component {
           <br />
           {this.state.legalResult}
           <br />
-          {this.state.cardsHTML}
-          {this.state.sideboardHTML}
+          {this.state.deckHTML}
         </Form>
       </div>
     )
-  }
-}
-
-class MTGCard extends Component {
-  constructor(props) {
-    super(props);
-    this.name = props.name;
-    this.count = props.count;
-    this.link = props.link;
-    this.cost = props.cost;
-  }
-
-  render() {
-    return (<div>
-      {this.link.includes(',') ?
-        <p>{this.count} x <a href={this.link.split(',')[0]}>{this.name.split('//')[0]}</a> {'//'} <a href={this.link.split(',')[1]}>{this.name.split('//')[1]}</a> ({this.cost}pts)</p>:
-        <p>{this.count} x <a href={this.link}>{this.name}</a> ({this.cost}pts)</p>
-      }
-      <span class='mtgcard'>{this.name}</span>
-    </div>);
   }
 }
