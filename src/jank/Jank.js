@@ -11,7 +11,11 @@ const BASIC_LANDS = ['plains', 'forest', 'island', 'swamp', 'mountain'];
 const INFINITE_CARDS = ['persistent petitioners', 'rat colony', 'plains', 'snow-covered plains', 'forest', 'snow-covered forest', 'island', 'snow-covered island', 'swamp', 'snow-covered swamp', 'mountain', 'snow-covered mountain', 'wastes'];
 
 function cleanCardName(name) {
-  let exactName = name.toLowerCase().trim();
+  let exactName = name.toLowerCase()
+    .trim()
+    // This is NOT a space, its a fixed width space!!!
+    // Trouble from Tapped Out HTML
+    .replace(/ /g, ' ');
   return exactName;
 }
 
@@ -19,10 +23,13 @@ function getWebData(query) {
   return new Promise(function (resolve, reject) {
     // Do the usual XHR stuff
     var req = new XMLHttpRequest();
+
+    if (!query.includes('api.scryfall.com')) {
+      query = 'https://cors-anywhere.herokuapp.com/' + query;
+      console.log('Reformatting to work around CORS ' + query);
+    }
+
     req.open('GET', query, true);
-    req.withCredentials = true;
-    // req.setRequestHeader('Access-Control-Allow-Origin', 'https://tappedout.net');
-    // req.setRequestHeader('Access-Control-Allow-Origin', 'https://api.scryfall.com');
 
     req.onload = function () {
       if (req.status === 200) {
@@ -100,7 +107,7 @@ function checkSetPermutations(deck, necessarySets, possibleSets) {
 
 
 function checkSetCount(deck) {
-  const cardList = deck.mainboard.concat(deck.sideboard)
+  const cardList = deck.mainboard.concat(deck.sideboard);
   var necessarySets = [];
   var possibleSets = [];
   var resultSets = [];
@@ -129,7 +136,7 @@ function checkSetCount(deck) {
         });
       }
     }
-  })
+  });
 
   if (necessarySets.length > 6) {
     var html = '';
@@ -140,6 +147,9 @@ function checkSetCount(deck) {
   } else if (necessarySets.length === 0) {
     necessarySets.push(LEGAL_SETS[0]);
   }
+
+  console.log(necessarySets);
+  console.log(possibleSets);
 
   if (validSubset(deck, necessarySets)) {
     resultSets = necessarySets;
@@ -518,6 +528,8 @@ export class Jank extends Component {
     this.updateDeckHTML = this.updateDeckHTML.bind(this);
     this.processDeck = this.processDeck.bind(this);
     this.processLink = this.processLink.bind(this);
+    this.processTappedOut = this.processTappedOut.bind(this);
+    this.processGoldfish = this.processGoldfish.bind(this);
   }
 
   updateLegalityHTML(deck) {
@@ -526,7 +538,7 @@ export class Jank extends Component {
     });
   }
 
-  updateDeckHTML(deck, checkLegality=false) {
+  updateDeckHTML(deck, checkLegality = false) {
     console.log('Updating deck to:');
     console.log(deck);
     this.setState({
@@ -572,20 +584,75 @@ export class Jank extends Component {
   }
 
   processLink() {
+    this.setState({
+      deck: null,
+      deckHTML: (<div></div>),
+      legalResult: (<div></div>)
+    });
     const query = document.getElementById('deckLink').value;
     console.log(query);
     getWebData(query).then(value => {
-      console.log(value);
+      if (query.includes('tappedout.net')) {
+        this.processTappedOut(value);
+      } else if (query.includes('mtggoldfish.com')) {
+        this.processGoldfish(value);
+      }
     }).catch(err => {
       console.log('ERROR PROCESSING LINK');
       console.log(err);
     });
   }
 
+  processTappedOut(value) {
+    var toHtml = document.createElement('html');
+    toHtml.innerHTML = value;
+    let htmlCards = toHtml.getElementsByClassName('member');
+    console.log(htmlCards);
+    let unprocessedDeck = new MTGDeck();
+
+    var i;
+    for (i = 0; i < htmlCards.length; i++) {
+      const count = parseInt(htmlCards[i].innerText.trim().split('x')[0]);
+      const name = htmlCards[i].innerText.trim().split('x').slice(1).join('x');
+      if (htmlCards[i].id.includes('boardContainer-main') && htmlCards[i].children.length === 1) {
+        unprocessedDeck.addCard(name, count, false);
+      } else if (htmlCards[i].id.includes('boardContainer-side') && htmlCards[i].children.length === 1) {
+        unprocessedDeck.addCard(name, count, true);
+      }
+    }
+
+    console.log('Processed deck of size: ' + (unprocessedDeck.getSize() + unprocessedDeck.getSideboardSize()));
+    console.log(unprocessedDeck);
+    unprocessedDeck.getInfo(this.updateDeckHTML);
+  }
+
+  processGoldfish(value) {
+    var toHtml = document.createElement('html');
+    toHtml.innerHTML = value;
+    let table = toHtml.getElementsByClassName('deck-view-deck-table')[0].children[0];
+
+    var unprocessedDeck = new MTGDeck();
+
+    var i;
+    var inSideboard = false;
+    for(i = 0; i < table.children.length; i++) {
+      const child = table.children[i];
+      if (child.children.length > 1) {
+        const count = parseInt(child.getElementsByClassName('deck-col-qty')[0].innerText);
+        const name = child.getElementsByClassName('deck-col-card')[0].children[0].innerText;
+        unprocessedDeck.addCard(name, count, inSideboard);
+      } else if(child.children.length === 1 && child.children[0].innerText.includes('Sideboard')) {
+        inSideboard = true;
+      }
+    }
+
+    unprocessedDeck.getInfo(this.updateDeckHTML);
+  }
+
   render() {
     return (
       <div className='Jank'>
-        <h1 style={{padding:'1em'}}>JANK DECK CHECKER</h1>
+        <h1 style={{ padding: '1em' }}>JANK DECK CHECKER</h1>
         <Form className='JankCardFinder container'>
           <FormGroup>
             <Label for='deckLink'>mtg goldfish or tapped out link</Label>
@@ -593,7 +660,7 @@ export class Jank extends Component {
           </FormGroup>
           <Button onClick={this.processLink}>Import!</Button>
           <FormGroup>
-            <Label for='deckList'>or<br />submit main board</Label>
+            <Label for='deckList'><br />or manually<br />submit main board</Label>
             <Input type='textarea' id='deckList' placeholder='<card count> <card name>' />
             <Label for='sideboard'>submit sideboard</Label>
             <Input type='textarea' id='sideboard' placeholder='<card count> <card name>' />
