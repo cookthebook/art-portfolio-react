@@ -198,7 +198,13 @@ function checkDeckLegality(deck) {
     if (card.cost < 0) {
       ret = (<p>NOT LEGAL: card {card.name} not found.</p>);
     }
+    deckPoints = deckPoints + (card.count * card.cost);
+  });
 
+  deck.sideboard.forEach(card => {
+    if (card.cost < 0) {
+      ret = (<p>NOT LEGAL: card {card.name} not found.</p>);
+    }
     deckPoints = deckPoints + (card.count * card.cost);
   });
 
